@@ -3,10 +3,10 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
-  outline: 1px solid rgba(255, 0, 0, 0.3);
+
 }
 body {
-  outline: 3px solid red;
+ 
 }
 /* For Nav-Bar Utilities ⭐*/
 
