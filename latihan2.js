@@ -73,18 +73,37 @@ searchButton.addEventListener("click", function () {
 
 const menuToggle = document.querySelector("#menuToggle");
 const mobileMenu = document.querySelector("#mobileMenu");
-const overlay = document.querySelector("#overlay");
+const overlayNavbar = document.querySelector("#overlayNavbar");
+const overlayGlobal = document.querySelector("#overlayGlobal");
+const searchMobile = document.querySelector(".search-button-nav-mobile");
+const inputMobile = document.querySelector(".input-keyword-mobile");
+const searchBoxMobile = document.querySelector(".navbar-search-mobile");
+searchMobile.addEventListener("click", function () {
+  searchBoxMobile.classList.toggle("active");
+  searchMobile.classList.toggle("inactive");
+
+  overlayGlobal.classList.toggle("active");
+
+  if (searchBoxMobile.classList.contains("active")) {
+    inputMobile.focus();
+  }
+});
 menuToggle.addEventListener("click", function (e) {
   /* e.stopPropagation(); */
   mobileMenu.classList.toggle("active");
-  overlay.classList.toggle("active");
+  overlayNavbar.classList.toggle("active");
 
   document.body.classList.toggle("no-scroll");
 });
-overlay.addEventListener("click", function (e) {
+overlayNavbar.addEventListener("click", function (e) {
   mobileMenu.classList.remove("active");
-  overlay.classList.remove("active");
+  overlayNavbar.classList.remove("active");
   document.body.classList.remove("no-scroll");
+});
+overlayGlobal.addEventListener("click", function () {
+  searchBoxMobile.classList.remove("active");
+  searchMobile.classList.remove("inactive");
+  overlayGlobal.classList.remove("active");
 });
 
 /* mobileMenu.addEventListener("click", function (e) {
@@ -93,11 +112,24 @@ overlay.addEventListener("click", function (e) {
 
 //Fetch (Async Await)
 
-const searchButton = document.querySelector(".search-button");
-
+const searchButton = document.querySelector("#searchButton");
+const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
+
+    const movies = await getMovies(inputKeyword.value);
+    updateUI(movies);
+  } catch (err) {
+    alert(err);
+  }
+});
+
+searchButtonMobile.addEventListener("click", async function () {
+  overlayGlobal.classList.remove("active");
+  /* overlay.classList.remove("active"); */
+  try {
+    const inputKeyword = document.querySelector(".input-keyword-mobile");
 
     const movies = await getMovies(inputKeyword.value);
     updateUI(movies);
@@ -163,6 +195,12 @@ document.addEventListener("click", async function (e) {
     }
   }
   /*   mobileMenu.classList.remove("active"); */
+  if (e.key === "Escape") {
+    console.log("ESC");
+    searchBoxMobile.classList.remove("active");
+    searchMobile.classList.remove("inactive");
+    overlayGlobal.classList.remove("active");
+  }
 });
 
 function showCards(movie) {
