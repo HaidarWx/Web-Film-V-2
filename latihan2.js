@@ -68,7 +68,13 @@ searchButton.addEventListener("click", function () {
       });
     });
 }); */
+const modalOverlay = document.querySelector(".modal-overlay");
+const modalClose = document.querySelector(".modal-close");
 
+modalClose.addEventListener("click", function () {
+  modalOverlay.classList.remove("active");
+  document.body.classList.remove("no-scroll");
+});
 //Responsive Design
 
 const menuToggle = document.querySelector("#menuToggle");
@@ -78,6 +84,16 @@ const overlayGlobal = document.querySelector("#overlayGlobal");
 const searchMobile = document.querySelector(".search-button-nav-mobile");
 const inputMobile = document.querySelector(".input-keyword-mobile");
 const searchBoxMobile = document.querySelector(".navbar-search-mobile");
+const soundButton = document.querySelector(".nav-sound");
+const music = document.querySelector("#bg-music");
+
+soundButton.addEventListener("click", function (e) {
+  e.preventDefault();
+  console.log("play");
+  music.volume = 0.3;
+  music.play();
+});
+
 searchMobile.addEventListener("click", function () {
   searchBoxMobile.classList.toggle("active");
   searchMobile.classList.toggle("inactive");
@@ -127,7 +143,7 @@ searchButton.addEventListener("click", async function () {
 
 searchButtonMobile.addEventListener("click", async function () {
   overlayGlobal.classList.remove("active");
-  /* overlay.classList.remove("active"); */
+
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
 
@@ -139,7 +155,7 @@ searchButtonMobile.addEventListener("click", async function () {
 });
 
 function getMovies(inputKeyword) {
-  return fetch("http://www.omdbapi.com/?apikey=dca61bcc&s=" + inputKeyword)
+  return fetch("https://www.omdbapi.com/?apikey=dca61bcc&s=" + inputKeyword)
     .then((response) => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -164,7 +180,7 @@ function updateUI(movies) {
 }
 
 function getModal(imdbid) {
-  return fetch("http://www.omdbapi.com/?apikey=dca61bcc&i=" + imdbid)
+  return fetch("https://www.omdbapi.com/?apikey=dca61bcc&i=" + imdbid)
     .then((response) => {
       if (!response.ok) {
         alert("Api Key Salah!");
@@ -177,7 +193,8 @@ function getModal(imdbid) {
 
 function updateUIDetail(modalValue) {
   const modalBody = document.querySelector(".modal-body");
-
+  modalOverlay.classList.toggle("active");
+  document.body.classList.toggle("no-scroll");
   let modal = showModal(modalValue);
   modalBody.innerHTML = modal;
 }
@@ -217,29 +234,29 @@ function showCards(movie) {
       />
       <div class="card-body">
         <h5 class="card-title">${movie.Title}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">${movie.Year}</h6>
-        <a href="#" 
+        <h6 class="card-year mb-2 text-muted">${movie.Year}</h6>
+        <button href="#" 
            class="btn btn-primary modal-detail-button"
            data-bs-toggle="modal"
            data-bs-target="#movieDetailModal"
            data-imdbid="${movie.imdbID}">
            Show Details
-        </a>
+        </button>
       </div>
     </div>
   `;
 }
 
 function showModal(detail) {
-  return ` <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-4">
-                  <img src="${detail.Poster}"  class="img-fluid" />
+  return `
+              <div class="con-modBody">
+                <div class="con-modImg">
+                  <img src="${detail.Poster}"  class="modal-img" />
                 </div>
-                <div class="col-md-8">
-                  <ul class="list-group">
-                    <li class="list-group-item">
-                      <strong>Title : </strong>${detail.Title} (${detail.Year})
+                <div class="modal-list">
+                  <ul class="list-group-modal">
+                    <li class="list-group-item modal-title">
+                      ${detail.Title} (${detail.Year})
                     </li>
                     <li class="list-group-item">
                       <strong>Writer : </strong> ${detail.Writer}
@@ -252,5 +269,5 @@ function showModal(detail) {
                   </ul>
                 </div>
               </div>
-            </div>`;
+            `;
 }
