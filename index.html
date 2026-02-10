@@ -12,7 +12,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
   </head>
-  <body>
+  <body id="top">
     <nav class="navbar">
       <div class="navbar-container">
         <div class="navbar-content">
@@ -39,7 +39,9 @@
                 class="form-control input-keyword"
                 placeholder="Search Movies..."
               />
-              <i class="bi bi-search search-button" id="searchButton"></i>
+              <a href="#">
+                <i class="bi bi-search search-button" id="searchButton"></i>
+              </a>
             </div>
             <div class="navbar-content-right">
               <a href="/" class="nav-sound">
@@ -55,6 +57,9 @@
                 <i class="bi bi-person-fill"></i>
               </a>
             </div>
+            <div class="navbar-pfp">
+              <img src="image/madoka_pfp.jpg" alt="" class="img-pp" />
+            </div>
           </div>
         </div>
       </div>
@@ -66,7 +71,7 @@
           <span class="logo-title">NokaFilm</span>
         </div>
         <div class="mobile-box-left"></div>
-        <a href="/"><i class="bi bi-house-door-fill"></i>Home</a>
+        <a href="index.html"><i class="bi bi-house-door-fill"></i>Home</a>
         <a href="/"><i class="bi bi-heart"></i>Favorite</a>
         <a href="/"><i class="bi bi-list-ul"></i>Watchlist</a>
         <a href="/"><i class="bi bi-clock-history"></i>History</a>
@@ -85,13 +90,13 @@
           ></i>
         </div>
         <i class="bi bi-search search-button-nav-mobile"></i>
-        <img src="image/madoka_pfp.jpg" alt="" class="img-pp" />
+        <img src="image/madoka_pfp.jpg" alt="" class="img-pp-mobile" />
       </div>
     </nav>
     <div class="overlay-global" id="overlayGlobal"></div>
     <div class="row-film mt-4 container-film"></div>
     <audio id="bg-music">
-      <source src="Desiderium.mp3" type="audio/mpeg" />
+      <source src="audio.mp3" type="audio/mpeg" />
     </audio>
     <!-- Awal Modal -->
 
@@ -139,6 +144,50 @@
     </div> -->
     <!-- Akhir Modal -->
 
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <div class="footer-icon">
+              <img
+                src="image/madoka-icon.gif"
+                alt="Icon"
+                class="footer-img-icon"
+              />
+              <span class="footer-logo">NokaFilm</span>
+            </div>
+            <p class="brand-title">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque
+              quisquam explicabo, dolore itaque facilis earum facere.
+            </p>
+            <div class="footer-social">
+              <a href="#"><i class="bi bi-twitter-x"></i></a>
+              <a href="#"><i class="bi bi-instagram"></i></a>
+              <a href="#"><i class="bi bi-facebook"></i></a>
+              <a href="#"><i class="bi bi-telegram"></i></a>
+            </div>
+            <button class="footer-back">
+              <i class="bi bi-arrow-bar-up"></i>
+              BACK TO TOP
+            </button>
+          </div>
+          <div class="footer-link">
+            <h2>Site Map</h2>
+            <div class="footer-links">
+              <a href="">Homepage</a>
+              <a href="">Contact Us</a>
+              <a href="">Subscription</a>
+              <a href="">Premium Account</a>
+              <a href="">Portal</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copy-rights">
+        <span>Copyright © 2026, NokaFilm, All Rights Reserved.</span>
+      </div>
+    </footer>
     <script src="latihan2.js"></script>
   </body>
 </html>
