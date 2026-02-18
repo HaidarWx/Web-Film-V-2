@@ -11,6 +11,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
+    />
   </head>
   <body id="top">
     <nav class="navbar">
@@ -96,7 +100,7 @@
     <div class="overlay-global" id="overlayGlobal"></div>
     <div class="row-film mt-4 container-film"></div>
     <audio id="bg-music">
-      <source src="audio.mp3" type="audio/mpeg" />
+      <source src="Desiderium.mp3" type="audio/mpeg" />
     </audio>
     <!-- Awal Modal -->
 
@@ -143,6 +147,52 @@
       </div>
     </div> -->
     <!-- Akhir Modal -->
+    <!-- Slider main container -->
+    <section class="hero-slider">
+      <div class="swiper mySwiper">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide">
+            <div class="slide-overlay">
+              <div class="slide-content">
+                <img
+                  src="https://m.media-amazon.com/images/M/MV5BMTU4MDUxMzcxMV5BMl5BanBnXkFtZTgwNzI5MDU2MDE@._V1_SX300.jpg"
+                  alt=""
+                  class="slide-img"
+                />
+
+                <h1 class="slide-title">Puella Magi Madoka Magica</h1>
+                <div class="slide-genre">Fantasy</div>
+                <p class="slide-info">
+                  A creature named Kyubey offers Madoka and Sayaka a wish if
+                  they agree to become 'magical girls' and fight abstract beings
+                  called 'witches'. However, a magical girl named Homura is, for
+                  uncertain reasons, determined to stop this ag...
+                </p>
+                <div class="slide-buttons">
+                  <a href="#" class="slide-button-1"
+                    ><i class="bi bi-play-fill"></i> Watch Now</a
+                  >
+                  <a href="#" class="slide-button-2"> More Info</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">Slide 2</div>
+          <div class="swiper-slide">Slide 3</div>
+        </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+        <!-- If we need scrollbar -->
+        <div class="swiper-scrollbar"></div>
+      </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -188,6 +238,7 @@
         <span>Copyright © 2026, NokaFilm, All Rights Reserved.</span>
       </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
     <script src="latihan2.js"></script>
   </body>
 </html>

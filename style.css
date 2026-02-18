@@ -137,10 +137,11 @@ nav {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding: 3rem;
 }
 .row-film {
   display: grid;
-  padding: 3rem;
+  /*   padding: 3rem; */
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
 }
@@ -212,7 +213,6 @@ nav {
 
 .modal-content {
   position: relative;
-
   max-width: 1000px;
   border-radius: 1rem;
   padding: 1rem;
@@ -370,6 +370,93 @@ nav {
 .copy-rights span {
   color: pink;
   font-weight: 600;
+}
+
+/* Swiper */
+:root {
+  --swiper-navigation-color: #62616133; /* Change the color to red */
+  --swiper-navigation-size: 30px; /* Change the size */
+}
+.hero-slider {
+  height: 70vh;
+  position: relative;
+}
+.swiper,
+.swiper-wrapper {
+  height: 100%;
+}
+.swiper-slide {
+  position: relative;
+  overflow: hidden;
+}
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  padding-left: 7rem;
+  justify-content: center;
+}
+.slide-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.slide-img {
+  object-fit: cover;
+  aspect-ratio: 2/3;
+  max-width: 150px;
+}
+.slide-title {
+  color: #ffff;
+  font-weight: 600;
+  font-size: 28px;
+}
+.slide-genre {
+  color: #ffff;
+  font-weight: 600;
+  font-size: 16px;
+}
+.slide-info {
+  color: #ffff;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 500px;
+}
+.slide-buttons {
+  display: flex;
+  gap: 1rem;
+}
+.slide-button-1 {
+  color: black;
+  background-color: #ffff;
+  border: 1px solid black;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 1rem;
+  font-size: 14px;
+  font-weight: 600;
+  max-width: 250px;
+}
+
+.slide-button-1 .bi {
+  font-size: 14px;
+}
+.slide-button-2 {
+  color: white;
+  background-color: #0000;
+  border: 1px solid white;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 1rem;
+  font-size: 14px;
+  font-weight: 600;
+  max-width: 250px;
 }
 /* Responsive Design */
 
