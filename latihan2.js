@@ -68,6 +68,7 @@ searchButton.addEventListener("click", function () {
       });
     });
 }); */
+
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
 
@@ -86,6 +87,7 @@ const inputMobile = document.querySelector(".input-keyword-mobile");
 const searchBoxMobile = document.querySelector(".navbar-search-mobile");
 const soundButton = document.querySelector(".nav-sound");
 const music = document.querySelector("#bg-music");
+const rowFilm = document.querySelector(".row-film");
 
 soundButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -133,8 +135,8 @@ const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
-
     const movies = await getMovies(inputKeyword.value);
+
     updateUI(movies);
   } catch (err) {
     alert(err);
@@ -146,8 +148,8 @@ searchButtonMobile.addEventListener("click", async function () {
 
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
-
     const movies = await getMovies(inputKeyword.value);
+
     updateUI(movies);
   } catch (err) {
     alert(err);
@@ -172,6 +174,11 @@ function getMovies(inputKeyword) {
 }
 
 function updateUI(movies) {
+  if (movies.length === 0) {
+    rowFilm.classList.remove("active");
+    return;
+  }
+  rowFilm.classList.add("active");
   let cards = ``;
   const containerFilm = document.querySelector(".container-film");
 
