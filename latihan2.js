@@ -1,73 +1,4 @@
-/* $(".search-button").on("click", function () {
-  $.ajax({
-    url:
-      "http://www.omdbapi.com/?apikey=dca61bcc&s=" + $(".input-keyword").val(),
-    success: (results) => {
-      const movies = results.Search.map((movie) => movie);
-      const row = document.querySelector(".container-film");
-      let cards = ``;
-      movies.forEach((movie) => {
-        cards += showCards(movie);
-      });
-      $(".container-film").html(cards);
-      console.log(movies);
-      $(".modal-detail-button").on("click", function () {
-        $.ajax({
-          url:
-            "http://www.omdbapi.com/?apikey=dca61bcc&i=" +
-            $(this).data("imdbid"),
-          success: (results) => {
-            console.log(results);
-            const movieDetail = showModal(results);
-            $(".modal-body").html(movieDetail);
-          },
-          error: (result) => console.log(result.responseText),
-        });
-      });
-    },
-    error: (results) => {
-      console.log(results.responseText);
-    },
-  });
-});
- */
-
-//Fetch
-
-/* const searchButton = document.getElementsByClassName("search-button")[0];
-const cards = document.querySelector(".container-film");
-
-searchButton.addEventListener("click", function () {
-  const inputKeyword = document.getElementsByClassName("input-keyword")[0];
-
-  fetch("http://www.omdbapi.com/?apikey=dca61bcc&s=" + inputKeyword.value)
-    .then((result) => {
-      return result.json();
-    })
-    .then((response) => {
-      const movies = response.Search;
-      let card = ``;
-      movies.forEach((movie) => {
-        card += showCards(movie);
-      });
-      cards.innerHTML = card;
-      const modalButton = document.querySelectorAll(".modal-detail-button");
-      modalButton.forEach((btn) => {
-        btn.addEventListener("click", function () {
-          const imdbId = this.dataset.imdbid;
-
-          fetch("http://www.omdbapi.com/?apikey=dca61bcc&i=" + imdbId)
-            .then((response) => response.json())
-            .then((response) => {
-              const modalBody = document.querySelector(".modal-body");
-              let modal = showModal(response);
-              modalBody.innerHTML = modal;
-            });
-          console.log(imdbId);
-        });
-      });
-    });
-}); */
+import { API_KEY, BASE_URL } from "./config.js";
 
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
@@ -135,8 +66,9 @@ const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
-    const movies = await getMovies(inputKeyword.value);
 
+    const movies = await getMovies(inputKeyword.value);
+    console.log(movies);
     updateUI(movies);
   } catch (err) {
     alert(err);
@@ -148,6 +80,7 @@ searchButtonMobile.addEventListener("click", async function () {
 
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
+
     const movies = await getMovies(inputKeyword.value);
 
     updateUI(movies);
@@ -157,19 +90,18 @@ searchButtonMobile.addEventListener("click", async function () {
 });
 
 function getMovies(inputKeyword) {
-  return fetch("https://www.omdbapi.com/?apikey=dca61bcc&s=" + inputKeyword)
+  return fetch(
+    `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${inputKeyword}&language=en-US`,
+  ) //Change
     .then((response) => {
       if (!response.ok) {
-        throw new Error(response.statusText);
+        console.log("Gagal mengambil data");
+        throw new Error(response);
       }
       return response.json();
     })
     .then((response) => {
-      if (response.Response === "False") {
-        throw new Error(response.Error);
-      }
-
-      return response.Search;
+      return response.results;
     });
 }
 
@@ -186,8 +118,10 @@ function updateUI(movies) {
   containerFilm.innerHTML = cards;
 }
 
-function getModal(imdbid) {
-  return fetch("https://www.omdbapi.com/?apikey=dca61bcc&i=" + imdbid)
+function getModal(movie_id) {
+  return fetch(
+    `https://api.themoviedb.org/3/multi/${movie_id}?api_key=${API_KEY}`,
+  )
     .then((response) => {
       if (!response.ok) {
         alert("Api Key Salah!");
@@ -211,8 +145,9 @@ document.addEventListener("click", async function (e) {
   console.log(e.target);
   if (e.target.classList.contains("modal-detail-button")) {
     try {
-      const imdbid = e.target.dataset.imdbid;
-      const modalValue = await getModal(imdbid);
+      const tmdbid = e.target.dataset.tmdbid;
+
+      const modalValue = await getModal(tmdbid);
       updateUIDetail(modalValue);
     } catch (err) {
       console.log(err);
@@ -228,25 +163,29 @@ document.addEventListener("click", async function (e) {
 });
 
 function showCards(movie) {
-  const poster =
+  /*   const poster =
     movie.Poster && movie.Poster !== "N/A" ? movie.Poster : "not-found.jpg"; // gambar fallback
   console.log(poster);
-
+ */
+  let releaseDate = movie.release_date;
+  if (releaseDate === "") {
+    releaseDate = "Coming Soon...";
+  }
   return `
     <div class="card">
       <img 
-        src="${poster}" 
+        src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
         class="card-img-top img-fluid"
         onerror="this.onerror=null; this.src='not-found.jpg';"
       />
       <div class="card-body">
-        <h5 class="card-title">${movie.Title}</h5>
-        <h6 class="card-year mb-2 text-muted">${movie.Year}</h6>
+        <h5 class="card-title">${movie.title}</h5>
+        <h6 class="card-year mb-2 text-muted">${releaseDate}</h6>
         <button href="#" 
            class="btn btn-primary modal-detail-button"
            data-bs-toggle="modal"
            data-bs-target="#movieDetailModal"
-           data-imdbid="${movie.imdbID}">
+           data-tmdbid="${movie.id}">
            Show Details
         </button>
       </div>
@@ -255,24 +194,30 @@ function showCards(movie) {
 }
 
 function showModal(detail) {
+  let releaseDate = detail.release_date;
+  if (releaseDate === "") {
+    releaseDate = "Coming Soon...";
+  }
   return `
               <div class="con-modBody">
                 <div class="con-modImg">
-                  <img src="${detail.Poster}"  class="modal-img" />
+                  <img src="https://image.tmdb.org/t/p/w500${detail.poster_path}"  class="modal-img" />
                 </div>
                 <div class="modal-list">
                   <ul class="list-group-modal">
                     <li class="list-group-item modal-title">
-                      ${detail.Title} (${detail.Year})
+                      ${detail.title} (${releaseDate})
                     </li>
                     <li class="list-group-item">
-                      <strong>Writer : </strong> ${detail.Writer}
+                      <strong>Original Title : </strong> ${detail.original_title}
                     </li>
                     <li class="list-group-item">
-                      <strong>Genre : </strong> ${detail.Genre}
+                      <strong>Original Language : </strong> ${detail.original_language}
                     </li>
-                    <li class="list-group-item"><strong>Actor : </strong> ${detail.Actors}</li>
-                    <li class="list-group-item"><strong>Plot : </strong> ${detail.Plot}</li>
+                    <li class="list-group-item">
+                      <strong>Plot: </strong> ${detail.overview}
+                    </li>
+                  
                   </ul>
                 </div>
               </div>
