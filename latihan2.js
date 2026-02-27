@@ -38,7 +38,6 @@ searchMobile.addEventListener("click", function () {
   }
 });
 menuToggle.addEventListener("click", function (e) {
-  /* e.stopPropagation(); */
   mobileMenu.classList.toggle("active");
   overlayNavbar.classList.toggle("active");
 
@@ -54,10 +53,6 @@ overlayGlobal.addEventListener("click", function () {
   searchMobile.classList.remove("inactive");
   overlayGlobal.classList.remove("active");
 });
-
-/* mobileMenu.addEventListener("click", function (e) {
-  e.stopPropagation();
-}); */
 
 //Fetch (Async Await)
 
@@ -89,27 +84,28 @@ searchButtonMobile.addEventListener("click", async function () {
   }
 });
 
-function getMovies(inputKeyword) {
-  return fetch(
-    `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${inputKeyword}&language=en-US`,
-  ) //Change
-    .then((response) => {
-      if (!response.ok) {
-        console.log("Gagal mengambil data");
-        throw new Error(response);
-      }
-      return response.json();
-    })
-    .then((response) => {
-      return response.results;
-    });
-}
+async function getMovies(inputKeyword) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${inputKeyword}`,
+    );
 
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data");
+    }
+
+    const data = await response.json();
+    return data.results;
+  } catch (error) {
+    throw error;
+  }
+}
 function updateUI(movies) {
   if (movies.length === 0) {
     rowFilm.classList.remove("active");
     return;
   }
+
   rowFilm.classList.add("active");
   let cards = ``;
   const containerFilm = document.querySelector(".container-film");
@@ -118,18 +114,20 @@ function updateUI(movies) {
   containerFilm.innerHTML = cards;
 }
 
-function getModal(movie_id) {
-  return fetch(
-    `https://api.themoviedb.org/3/multi/${movie_id}?api_key=${API_KEY}`,
-  )
-    .then((response) => {
-      if (!response.ok) {
-        alert("Api Key Salah!");
-        throw new Error(response.Error);
-      }
-      return response.json();
-    })
-    .then((response) => response);
+async function getModal(movie_id, movie_type) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/${movie_type}/${movie_id}?api_key=${API_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data!");
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 }
 
 function updateUIDetail(modalValue) {
@@ -146,8 +144,8 @@ document.addEventListener("click", async function (e) {
   if (e.target.classList.contains("modal-detail-button")) {
     try {
       const tmdbid = e.target.dataset.tmdbid;
-
-      const modalValue = await getModal(tmdbid);
+      const typeId = e.target.dataset.typeid;
+      const modalValue = await getModal(tmdbid, typeId);
       updateUIDetail(modalValue);
     } catch (err) {
       console.log(err);
@@ -163,13 +161,15 @@ document.addEventListener("click", async function (e) {
 });
 
 function showCards(movie) {
-  /*   const poster =
+  /* const poster =
     movie.Poster && movie.Poster !== "N/A" ? movie.Poster : "not-found.jpg"; // gambar fallback
   console.log(poster);
  */
-  let releaseDate = movie.release_date;
-  if (releaseDate === "") {
-    releaseDate = "Coming Soon...";
+
+  let dateMovie = movie.release_date || movie.first_air_date;
+  let nameMovie = movie.title || movie.name;
+  if (dateMovie === "") {
+    dateMovie = "Coming Soon...";
   }
   return `
     <div class="card">
@@ -179,13 +179,14 @@ function showCards(movie) {
         onerror="this.onerror=null; this.src='not-found.jpg';"
       />
       <div class="card-body">
-        <h5 class="card-title">${movie.title}</h5>
-        <h6 class="card-year mb-2 text-muted">${releaseDate}</h6>
+        <h5 class="card-title">${nameMovie}</h5>
+        <h6 class="card-year mb-2 text-muted">${dateMovie}</h6>
         <button href="#" 
            class="btn btn-primary modal-detail-button"
            data-bs-toggle="modal"
            data-bs-target="#movieDetailModal"
-           data-tmdbid="${movie.id}">
+           data-tmdbid="${movie.id}"
+           data-typeid="${movie.media_type}">
            Show Details
         </button>
       </div>
@@ -194,9 +195,11 @@ function showCards(movie) {
 }
 
 function showModal(detail) {
-  let releaseDate = detail.release_date;
-  if (releaseDate === "") {
-    releaseDate = "Coming Soon...";
+  let dateMovie = detail.release_date || detail.first_air_date;
+  let nameMovie = detail.title || detail.name;
+  let originalMovie = detail.original_title || detail.original_name;
+  if (dateMovie === "") {
+    dateMovie = "Coming Soon...";
   }
   return `
               <div class="con-modBody">
@@ -206,10 +209,10 @@ function showModal(detail) {
                 <div class="modal-list">
                   <ul class="list-group-modal">
                     <li class="list-group-item modal-title">
-                      ${detail.title} (${releaseDate})
+                      ${nameMovie} (${dateMovie})
                     </li>
                     <li class="list-group-item">
-                      <strong>Original Title : </strong> ${detail.original_title}
+                      <strong>Original Title : </strong> ${originalMovie}
                     </li>
                     <li class="list-group-item">
                       <strong>Original Language : </strong> ${detail.original_language}
