@@ -1,5 +1,9 @@
 import { API_KEY, BASE_URL } from "./config.js";
 
+window.addEventListener("DOMContentLoaded", async () => {
+  genreList = await loadAllGenres();
+  await getPopularMovies();
+});
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
 
@@ -7,6 +11,8 @@ modalClose.addEventListener("click", function () {
   modalOverlay.classList.remove("active");
   document.body.classList.remove("no-scroll");
 });
+
+let genreList = [];
 //Responsive Design
 
 const menuToggle = document.querySelector("#menuToggle");
@@ -19,6 +25,8 @@ const searchBoxMobile = document.querySelector(".navbar-search-mobile");
 const soundButton = document.querySelector(".nav-sound");
 const music = document.querySelector("#bg-music");
 const rowFilm = document.querySelector(".row-film");
+const swiperFilm = document.querySelector(".swiper-content");
+const swiperBg = document.querySelector(".slide-bg");
 
 soundButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -63,7 +71,7 @@ searchButton.addEventListener("click", async function () {
     const inputKeyword = document.querySelector(".input-keyword");
 
     const movies = await getMovies(inputKeyword.value);
-    console.log(movies);
+
     updateUI(movies);
   } catch (err) {
     alert(err);
@@ -75,7 +83,6 @@ searchButtonMobile.addEventListener("click", async function () {
 
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
-
     const movies = await getMovies(inputKeyword.value);
 
     updateUI(movies);
@@ -146,12 +153,13 @@ document.addEventListener("click", async function (e) {
       const tmdbid = e.target.dataset.tmdbid;
       const typeId = e.target.dataset.typeid;
       const modalValue = await getModal(tmdbid, typeId);
+      console.log(modalValue);
       updateUIDetail(modalValue);
     } catch (err) {
       console.log(err);
     }
   }
-  /*   mobileMenu.classList.remove("active"); */
+
   if (e.key === "Escape") {
     console.log("ESC");
     searchBoxMobile.classList.remove("active");
@@ -161,16 +169,21 @@ document.addEventListener("click", async function (e) {
 });
 
 function showCards(movie) {
-  /* const poster =
-    movie.Poster && movie.Poster !== "N/A" ? movie.Poster : "not-found.jpg"; // gambar fallback
-  console.log(poster);
- */
+  const poster =
+    movie.poster_path && movie.poster_path !== "N/A"
+      ? movie.poster_path
+      : "not-found.jpg";
 
   let dateMovie = movie.release_date || movie.first_air_date;
   let nameMovie = movie.title || movie.name;
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }
+  /* const genreId = movie.genre_ids;
+  const genreMovie = genreId.map((id) => {
+    const genre = genreList.find((g) => id === g.id);
+    return genre.name;
+  }); */
   return `
     <div class="card">
       <img 
@@ -198,6 +211,16 @@ function showModal(detail) {
   let dateMovie = detail.release_date || detail.first_air_date;
   let nameMovie = detail.title || detail.name;
   let originalMovie = detail.original_title || detail.original_name;
+  let genres = "Unknown";
+
+  if (detail.genres && detail.genres.length > 0) {
+    genres = detail.genres
+      .map(function (g) {
+        return g.name;
+      })
+      .join(", ");
+  }
+  console.log(detail);
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }
@@ -212,7 +235,7 @@ function showModal(detail) {
                       ${nameMovie} (${dateMovie})
                     </li>
                     <li class="list-group-item">
-                      <strong>Original Title : </strong> ${originalMovie}
+                      <strong>Genre : </strong> ${genres}
                     </li>
                     <li class="list-group-item">
                       <strong>Original Language : </strong> ${detail.original_language}
@@ -227,6 +250,91 @@ function showModal(detail) {
             `;
 }
 
+async function loadAllGenres() {
+  try {
+    const [movieRes, tvRes] = await Promise.all([
+      fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`),
+      fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}`),
+    ]);
+
+    if (!movieRes.ok || !tvRes.ok) {
+      throw new Error("Gagal mengambil data");
+    }
+    const movieData = await movieRes.json();
+    const tvData = await tvRes.json();
+    genreList = [...movieData.genres, ...tvData.genres];
+    return genreList;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function getGenreNames(genreIds) {
+  return genreIds
+    .map((id) => {
+      const genre = genreList.find((g) => g.id === id);
+      return genre ? genre.name : "";
+    })
+    .join(", ");
+}
+
+async function getPopularMovies() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/popular?api_key=${API_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    const data = await response.json();
+    console.log(data);
+    updateSwiper(data.results);
+  } catch (err) {
+    throw err;
+  }
+}
+
+function updateSwiper(dataSwiper) {
+  let swiperHTML = ``;
+  console.log(dataSwiper);
+  const limitData = dataSwiper.slice(1, 3);
+  console.log(limitData);
+  limitData.forEach((film) => {
+    swiperHTML += showSwiper(film);
+  });
+}
+
+function showSwiper(data) {
+  const genre = getGenreNames(data.genre_ids);
+
+  return `<div class="swiper-slide">
+            <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
+            <div class="slide-overlay">
+              <div class="slide-content">
+                <img
+                  src="https://image.tmdb.org/t/p/w500${data.backdrop_path}"
+                  alt=""
+                  class="slide-img"
+                />
+
+                <h1 class="slide-title">
+                  ${data.title}
+                </h1>
+                <div class="slide-genre">${genre}</div>
+                <p class="slide-info">
+                  ${data.overview}
+                </p>
+                <div class="slide-buttons">
+                  <a href="#" class="slide-button-1"
+                    ><i class="bi bi-play-fill"></i> Watch Now</a
+                  >
+                  <a href="#" class="slide-button-2"> More Info</a>
+                </div>
+              </div>
+            </div>
+          </div>`;
+}
 /* Swiper Content */
 const swiper = new Swiper(".swiper", {
   // Optional parameters
