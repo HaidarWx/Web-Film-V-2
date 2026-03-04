@@ -290,6 +290,17 @@ async function getPopularMovies() {
     const data = await response.json();
     console.log(data);
     updateSwiper(data.results);
+
+    new Swiper(".swiper", {
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
   } catch (err) {
     throw err;
   }
@@ -298,16 +309,17 @@ async function getPopularMovies() {
 function updateSwiper(dataSwiper) {
   let swiperHTML = ``;
   console.log(dataSwiper);
-  const limitData = dataSwiper.slice(1, 3);
+  const limitData = dataSwiper.slice(1, 6);
   console.log(limitData);
   limitData.forEach((film) => {
     swiperHTML += showSwiper(film);
   });
+  swiperFilm.innerHTML = swiperHTML;
 }
 
 function showSwiper(data) {
   const genre = getGenreNames(data.genre_ids);
-
+  console.log(data);
   return `<div class="swiper-slide">
             <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
             <div class="slide-overlay">
@@ -326,34 +338,13 @@ function showSwiper(data) {
                   ${data.overview}
                 </p>
                 <div class="slide-buttons">
-                  <a href="#" class="slide-button-1"
+                  <a href="#" class="slide-button-1" 
                     ><i class="bi bi-play-fill"></i> Watch Now</a
                   >
-                  <a href="#" class="slide-button-2"> More Info</a>
+                  <a href="#" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} > More Info</a>
                 </div>
               </div>
             </div>
           </div>`;
 }
 /* Swiper Content */
-const swiper = new Swiper(".swiper", {
-  // Optional parameters
-  direction: "horizontal",
-  loop: true,
-
-  // If we need pagination
-  pagination: {
-    el: ".swiper-pagination",
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-
-  // And if we need scrollbar
-  scrollbar: {
-    el: ".swiper-scrollbar",
-  },
-});

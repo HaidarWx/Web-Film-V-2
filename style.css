@@ -391,6 +391,10 @@ nav {
   position: relative;
   overflow: hidden;
 }
+.swiper-content {
+  background-image: url("https://tse2.mm.bing.net/th/id/OIP.FuFrfockDOuOdTfZByH8cAHaEK?w=1920&h=1080&rs=1&pid=ImgDetMain&o=7&rm=3");
+  opacity: 1;
+}
 .slide-bg {
   position: absolute;
   inset: 0;
@@ -401,7 +405,6 @@ nav {
   background-repeat: no-repeat;
 }
 .slide-bg {
-  background-image: url("https://tse2.mm.bing.net/th/id/OIP.FuFrfockDOuOdTfZByH8cAHaEK?w=1920&h=1080&rs=1&pid=ImgDetMain&o=7&rm=3");
 }
 .slide-overlay {
   position: absolute;
@@ -416,6 +419,7 @@ nav {
   align-items: center;
   padding-left: 7rem;
 }
+
 .slide-content {
   display: flex;
   flex-direction: column;
