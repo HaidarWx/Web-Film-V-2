@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movies database</title>
-    <link rel="stylesheet" href="style.css" />
 
     <link rel="icon" href="image/madoka-icon.gif" type="image/icon type" />
     <link
@@ -15,6 +14,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
     />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body id="top">
     <nav class="navbar">
@@ -159,8 +159,16 @@
         <div class="swiper-pagination"></div>
 
         <!-- If we need navigation buttons -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M16 5l-8 7 8 7" stroke="black" stroke-width="2" />
+          </svg>
+        </div>
+        <div class="swiper-button-next">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M8 5l8 7-8 7" stroke="black" stroke-width="2" />
+          </svg>
+        </div>
       </div>
     </section>
 
