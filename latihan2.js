@@ -102,6 +102,7 @@ async function getMovies(inputKeyword) {
     }
 
     const data = await response.json();
+    console.log(data.results);
     return data.results;
   } catch (error) {
     throw error;
@@ -152,8 +153,9 @@ document.addEventListener("click", async function (e) {
     try {
       const tmdbid = e.target.dataset.tmdbid;
       const typeId = e.target.dataset.typeid;
+      console.log("TypeId = " + typeId);
       const modalValue = await getModal(tmdbid, typeId);
-      console.log(modalValue);
+      console.log("ONCLICK");
       updateUIDetail(modalValue);
     } catch (err) {
       console.log(err);
@@ -210,9 +212,12 @@ function showCards(movie) {
 function showModal(detail) {
   let dateMovie = detail.release_date || detail.first_air_date;
   let nameMovie = detail.title || detail.name;
-  let originalMovie = detail.original_title || detail.original_name;
+  /*  let originalMovie = detail.original_title || detail.original_name; */
   let genres = "Unknown";
-
+  console.log(dateMovie);
+  console.log(nameMovie);
+  /*  console.log(originalMovie) */
+  console.log(genres);
   if (detail.genres && detail.genres.length > 0) {
     genres = detail.genres
       .map(function (g) {
@@ -281,14 +286,14 @@ function getGenreNames(genreIds) {
 async function getPopularMovies() {
   try {
     const response = await fetch(
-      `${BASE_URL}/movie/popular?api_key=${API_KEY}`,
+      `${BASE_URL}/trending/all/week?api_key=${API_KEY}`,
     );
 
     if (!response.ok) {
       throw new Error("Gagal mengambil data movie popular!");
     }
     const data = await response.json();
-    console.log(data);
+    /* console.log(data); */
     updateSwiper(data.results);
 
     new Swiper(".swiper", {
@@ -308,7 +313,7 @@ async function getPopularMovies() {
 
 function updateSwiper(dataSwiper) {
   let swiperHTML = ``;
-  console.log(dataSwiper);
+
   const limitData = dataSwiper.slice(1, 6);
   console.log(limitData);
   limitData.forEach((film) => {
@@ -331,7 +336,7 @@ function showSwiper(data) {
                 />
 
                 <h1 class="slide-title">
-                  ${data.title}
+                  ${data.title || data.name}
                 </h1>
                 <div class="slide-genre">${genre}</div>
                 <p class="slide-info">
@@ -341,7 +346,7 @@ function showSwiper(data) {
                   <a href="#" class="slide-button-1" 
                     ><i class="bi bi-play-fill"></i> Watch Now</a
                   >
-                  <a href="#" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} > More Info</a>
+                  <a href="#" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} data-typeid="${data.media_type}"> More Info</a>
                 </div>
               </div>
             </div>

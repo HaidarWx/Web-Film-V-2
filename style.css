@@ -400,9 +400,7 @@ nav {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
-
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
 }
 .slide-bg {
@@ -429,7 +427,7 @@ nav {
 .slide-img {
   object-fit: cover;
   aspect-ratio: 2/3;
-  max-width: 150px;
+  max-width: 100px;
 }
 .slide-title {
   color: #ffff;
