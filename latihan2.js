@@ -155,7 +155,7 @@ document.addEventListener("click", async function (e) {
       const typeId = e.target.dataset.typeid;
       console.log("TypeId = " + typeId);
       const modalValue = await getModal(tmdbid, typeId);
-      console.log("ONCLICK");
+
       updateUIDetail(modalValue);
     } catch (err) {
       console.log(err);
@@ -296,16 +296,17 @@ async function getPopularMovies() {
     /* console.log(data); */
     updateSwiper(data.results);
 
-    new Swiper(".swiper", {
+    /* new Swiper(".swiper-hero", {
       loop: true,
       pagination: {
         el: ".swiper-pagination",
+        clickable: true,
       },
       navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
+        nextEl: ".swiper-hero .swiper-button-next",
+        prevEl: ".swiper-hero .swiper-button-prev",
       },
-    });
+    }); */
   } catch (err) {
     throw err;
   }
@@ -313,8 +314,8 @@ async function getPopularMovies() {
 
 function updateSwiper(dataSwiper) {
   let swiperHTML = ``;
-
-  const limitData = dataSwiper.slice(1, 6);
+  const maxMovies = 20;
+  const limitData = dataSwiper.slice(1, maxMovies);
   console.log(limitData);
   limitData.forEach((film) => {
     swiperHTML += showSwiper(film);
@@ -330,7 +331,7 @@ function showSwiper(data) {
             <div class="slide-overlay">
               <div class="slide-content">
                 <img
-                  src="https://image.tmdb.org/t/p/w500${data.backdrop_path}"
+                  src="https://image.tmdb.org/t/p/w500${data.poster_path}"
                   alt=""
                   class="slide-img"
                 />
@@ -352,4 +353,17 @@ function showSwiper(data) {
             </div>
           </div>`;
 }
-/* Swiper Content */
+
+new Swiper(".cardSwiper", {
+  slidesPerView: 5,
+  slidesPerGroup: 5,
+  spaceBetween: 16,
+  resistanceRatio: 0,
+  watchOverflow: true,
+  slidesOffsetAfter: 0,
+
+  navigation: {
+    nextEl: ".cardSwiper .swiper-button-next",
+    prevEl: ".cardSwiper .swiper-button-prev",
+  },
+});

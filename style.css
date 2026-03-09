@@ -10,7 +10,7 @@ body {
   /* outline: 3px solid red; */
 }
 body.no-scroll {
-  overflow: hidden;
+  /*  overflow: hidden; */
 }
 /* For Nav-Bar Utilities ⭐*/
 
@@ -384,11 +384,11 @@ nav {
   height: 70vh;
   position: relative;
 }
-.swiper {
+.swiper-hero {
   height: 100%;
   --bullet-color: pink;
 }
-.swiper-slide {
+.swiper-content .swiper-slide {
   position: relative;
   overflow: hidden;
 }
@@ -519,6 +519,28 @@ nav {
   height: 10px;
   border-radius: 50%;
 }
+
+/* Card Content */
+.cardSwiper {
+  padding: 0 3rem;
+}
+.card-slider {
+  padding: 2rem 0;
+  width: 100%;
+}
+.cardSwiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-img {
+  object-fit: cover;
+  aspect-ratio: 2/3;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 /* Responsive Design */
 
 @media (max-width: 640px) {
