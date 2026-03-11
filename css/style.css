@@ -478,7 +478,9 @@ nav {
   font-weight: 600;
   max-width: 250px;
 }
-
+.cardSwiper .swiper-button-disabled {
+  display: none;
+}
 .swiper-button-prev::after,
 .swiper-button-next::after {
   display: none;
@@ -542,6 +544,7 @@ nav {
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+  max-width: 170px;
 }
 
 .cardSwiper h1 {
