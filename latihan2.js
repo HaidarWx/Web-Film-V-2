@@ -3,6 +3,7 @@ import { API_KEY, BASE_URL } from "./config.js";
 window.addEventListener("DOMContentLoaded", async () => {
   genreList = await loadAllGenres();
   await getPopularMovies();
+  await updateCards();
 });
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
@@ -27,6 +28,7 @@ const music = document.querySelector("#bg-music");
 const rowFilm = document.querySelector(".row-film");
 const swiperFilm = document.querySelector(".swiper-content");
 const swiperBg = document.querySelector(".slide-bg");
+const trendingDays = document.querySelector(".card-slider-day .swiper-wrapper");
 
 soundButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -197,7 +199,7 @@ function showCards(movie) {
         <h5 class="card-title">${nameMovie}</h5>
         <h6 class="card-year mb-2 text-muted">${dateMovie}</h6>
         <button href="#" 
-           class="btn btn-primary modal-detail-button"
+           class="btn btn-primary modal-detail-button btn-card"
            data-bs-toggle="modal"
            data-bs-target="#movieDetailModal"
            data-tmdbid="${movie.id}"
@@ -296,17 +298,22 @@ async function getPopularMovies() {
     /* console.log(data); */
     updateSwiper(data.results);
 
-    /* new Swiper(".swiper-hero", {
+    new Swiper(".swiper-hero", {
       loop: true,
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
       },
+      autoplay: {
+        delay: 3000,
+        pauseOnMouseEnter: true,
+      },
+
       navigation: {
         nextEl: ".swiper-hero .swiper-button-next",
         prevEl: ".swiper-hero .swiper-button-prev",
       },
-    }); */
+    });
   } catch (err) {
     throw err;
   }
@@ -325,7 +332,7 @@ function updateSwiper(dataSwiper) {
 
 function showSwiper(data) {
   const genre = getGenreNames(data.genre_ids);
-  console.log(data);
+  /*  console.log(data); */
   return `<div class="swiper-slide">
             <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
             <div class="slide-overlay">
@@ -354,16 +361,65 @@ function showSwiper(data) {
           </div>`;
 }
 
+async function getTrendingMovie() {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/trending/all/day?api_key=${API_KEY}`,
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error("Gagal mengambil data movie popular!");
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function updateCards() {
+  const data = await getTrendingMovie();
+  const movies = data.results;
+  let moviesHTML = ``;
+  movies.forEach((movie) => {
+    moviesHTML += showCardsDay(movie);
+  });
+  trendingDays.innerHTML = moviesHTML;
+  console.log(data);
+}
+
+function showCardsDay(movie) {
+  return `<div class="swiper-slide">
+            <img
+              src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+              alt=""
+              class="card-img modal-detail-button"
+              data-tmdbid=${movie.id} data-typeid=${movie.media_type}
+            />
+          </div>`;
+}
 new Swiper(".cardSwiper", {
   slidesPerView: 5,
-  slidesPerGroup: 5,
+  slidesPerGroup: 1,
   spaceBetween: 16,
   resistanceRatio: 0,
   watchOverflow: true,
   slidesOffsetAfter: 0,
-
   navigation: {
     nextEl: ".cardSwiper .swiper-button-next",
     prevEl: ".cardSwiper .swiper-button-prev",
+  },
+  breakpoints: {
+    320: {
+      slidesPerView: 2,
+      slidesPerGroup: 2,
+    },
+    768: {
+      slidesPerView: 4,
+      slidesPerGroup: 4,
+    },
+    1024: {
+      slidesPerView: 5,
+      slidesPerGroup: 5,
+    },
   },
 });

@@ -190,7 +190,7 @@ nav {
   padding: 4px;
   border-radius: 5px;
 }
-.modal-detail-button {
+.btn-card {
   text-align: center;
   outline: none;
   border: none;
@@ -496,8 +496,8 @@ nav {
   transition: opacity 0.3s ease-in-out;
 }
 
-.mySwiper:hover .swiper-button-next,
-.mySwiper:hover .swiper-button-prev {
+.swiper-hero:hover .swiper-button-next,
+.swiper-hero:hover .swiper-button-prev {
   opacity: 1;
 }
 .swiper-pagination {
@@ -521,10 +521,13 @@ nav {
 }
 
 /* Card Content */
+.card-slider-day {
+  background-color: #fad2d5;
+}
 .cardSwiper {
   padding: 0 3rem;
 }
-.card-slider {
+.card-slider-day {
   padding: 2rem 0;
   width: 100%;
 }
@@ -541,6 +544,18 @@ nav {
   cursor: pointer;
 }
 
+.cardSwiper h1 {
+  font-family: "Poppins", sans-serif;
+  color: #ffff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.cardSwiper .swiper-button-prev {
+  left: 10px;
+}
+.cardSwiper .swiper-button-next {
+  right: 10px;
+}
 /* Responsive Design */
 
 @media (max-width: 640px) {
