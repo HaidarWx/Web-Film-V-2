@@ -525,14 +525,13 @@ nav {
 /* Card Content */
 .card-slider-day {
   background-color: #fad2d5;
+  padding: 2rem 0;
+  width: 100%;
 }
 .cardSwiper {
   padding: 0 3rem;
 }
-.card-slider-day {
-  padding: 2rem 0;
-  width: 100%;
-}
+
 .cardSwiper .swiper-slide {
   display: flex;
   justify-content: center;
@@ -558,6 +557,22 @@ nav {
 }
 .cardSwiper .swiper-button-next {
   right: 10px;
+}
+
+.card-slider-week {
+  background-color: #fad2d5;
+  padding: 2rem 0;
+  width: 100%;
+}
+.card-slider-popular {
+  background-color: #fad2d5;
+  padding: 2rem 0;
+  width: 100%;
+}
+.card-slider-topRated {
+  background-color: #fad2d5;
+  padding: 2rem 0;
+  width: 100%;
 }
 /* Responsive Design */
 

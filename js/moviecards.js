@@ -113,13 +113,20 @@ export function showSwiper(data) {
             </div>
           </div>`;
 }
-export function showCardsDay(movie) {
-  return `<div class="swiper-slide">
+
+export function renderMovies(movies, selector, type) {
+  const container = document.querySelector(`${selector}`);
+
+  const htmlCards = movies.map((movie) => {
+    return `<div class="swiper-slide">
             <img
               src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
               alt=""
               class="card-img modal-detail-button"
-              data-tmdbid=${movie.id} data-typeid=${movie.media_type}
+              data-tmdbid=${movie.id} data-typeid=${movie.media_type ?? type}
             />
           </div>`;
+  });
+
+  container.innerHTML = htmlCards;
 }

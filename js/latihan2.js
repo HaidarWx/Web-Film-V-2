@@ -1,25 +1,33 @@
 import { API_KEY, BASE_URL } from "../api/tmdb.js";
-import { getTrendingMovie } from "../api/tmdb.js";
+import { getTrendingDays } from "../api/tmdb.js";
+import { getTrendingWeeks } from "../api/tmdb.js";
+import { getTrendingPopular } from "../api/tmdb.js";
+import { getTrendingTopRated } from "../api/tmdb.js";
 import { getMovies } from "../api/tmdb.js";
 import { getModal } from "../api/tmdb.js";
 import { getPopularMovies } from "../api/tmdb.js";
-import { showCards } from "./moviecards.js";
+import { renderMovies, showCards } from "./moviecards.js";
 import { showModal } from "./moviecards.js";
 import { showSwiper } from "./moviecards.js";
-import { showCardsDay } from "./moviecards.js";
 import { loadAllGenres } from "../api/tmdb.js";
 import { initSlider } from "./initSlider.js";
 import { heroSlider } from "./initSlider.js";
 window.addEventListener("DOMContentLoaded", async () => {
   genreList = await loadAllGenres();
+  console.log(genreList);
   await getPopularMovies();
-  await updateCards();
+  await updateCardsDay();
+  await updateCardsWeek();
+  await updateCardsPopular();
+  await updateCardsTopRated();
 });
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
+const modalBody = document.querySelector(".modal-body");
 
 modalClose.addEventListener("click", function () {
   modalOverlay.classList.remove("active");
+  modalBody.innerHTML = "";
   document.body.classList.remove("no-scroll");
 });
 
@@ -37,7 +45,6 @@ const music = document.querySelector("#bg-music");
 const rowFilm = document.querySelector(".row-film");
 const swiperFilm = document.querySelector(".swiper-content");
 const swiperBg = document.querySelector(".slide-bg");
-const trendingDays = document.querySelector(".card-slider-day .swiper-wrapper");
 
 soundButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -117,7 +124,7 @@ function updateUI(movies) {
 }
 
 function updateUIDetail(modalValue) {
-  const modalBody = document.querySelector(".modal-body");
+  console.log(modalValue);
   modalOverlay.classList.toggle("active");
   document.body.classList.toggle("no-scroll");
   let modal = showModal(modalValue);
@@ -165,12 +172,31 @@ export function updateSwiper(dataSwiper) {
   heroSlider();
 }
 
-async function updateCards() {
-  const data = await getTrendingMovie();
+async function updateCardsDay() {
+  const data = await getTrendingDays();
   const movies = data.results;
-  const moviesHTML = movies.map(showCardsDay).join("");
-
-  trendingDays.innerHTML = moviesHTML;
+  renderMovies(movies, ".card-slider-day .swiper-wrapper");
+  initSlider(".cardSwiper");
+  console.log(data);
+}
+async function updateCardsWeek() {
+  const data = await getTrendingWeeks();
+  const movies = data.results;
+  renderMovies(movies, ".card-slider-week .swiper-wrapper");
+  initSlider(".cardSwiper");
+  console.log(data);
+}
+async function updateCardsPopular() {
+  const data = await getTrendingPopular();
+  const movies = data;
+  renderMovies(movies, ".card-slider-popular .swiper-wrapper", "tv");
+  initSlider(".cardSwiper");
+  console.log(data);
+}
+async function updateCardsTopRated() {
+  const data = await getTrendingTopRated();
+  const movies = data;
+  renderMovies(movies, ".card-slider-topRated .swiper-wrapper", "movie");
   initSlider(".cardSwiper");
   console.log(data);
 }

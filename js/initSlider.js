@@ -4,7 +4,7 @@ export function initSlider(selector, options = {}) {
     slidesPerGroup: 1,
     spaceBetween: 15,
     resistanceRatio: 0,
-    watchOverflow: true,
+
     slidesOffsetAfter: 0,
 
     navigation: {
@@ -23,7 +23,7 @@ export function initSlider(selector, options = {}) {
       },
       1024: {
         slidesPerView: 7,
-        slidesPerGroup: 7,
+        slidesPerGroup: 1,
       },
     },
 
