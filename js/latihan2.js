@@ -42,7 +42,7 @@ const inputMobile = document.querySelector(".input-keyword-mobile");
 const searchBoxMobile = document.querySelector(".navbar-search-mobile");
 const soundButton = document.querySelector(".nav-sound");
 const music = document.querySelector("#bg-music");
-const rowFilm = document.querySelector(".row-film");
+const containerFilm = document.querySelector(".search-results");
 const swiperFilm = document.querySelector(".swiper-content");
 const swiperBg = document.querySelector(".slide-bg");
 
@@ -111,15 +111,15 @@ searchButtonMobile.addEventListener("click", async function () {
 
 function updateUI(movies) {
   if (movies.length === 0) {
-    rowFilm.classList.remove("active");
+    containerFilm.classList.remove("active");
     return;
   }
 
-  rowFilm.classList.add("active");
+  containerFilm.classList.add("active");
   let cards = ``;
-  const containerFilm = document.querySelector(".container-film");
 
   movies.forEach((movie) => (cards += showCards(movie)));
+  console.log(cards);
   containerFilm.innerHTML = cards;
 }
 
@@ -134,6 +134,7 @@ function updateUIDetail(modalValue) {
 //Event binding
 document.addEventListener("click", async function (e) {
   console.log(e.target);
+  e.stopImmediatePropagation();
   if (e.target.classList.contains("modal-detail-button")) {
     try {
       const tmdbid = e.target.dataset.tmdbid;

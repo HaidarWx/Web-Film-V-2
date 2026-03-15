@@ -8,6 +8,7 @@ export function showCards(movie) {
 
   let dateMovie = movie.release_date || movie.first_air_date;
   let nameMovie = movie.title || movie.name;
+  let originalName = movie.original_name || movie.original_title;
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }
@@ -16,27 +17,40 @@ export function showCards(movie) {
     const genre = genreList.find((g) => id === g.id);
     return genre.name;
   }); */
-  return `
-    <div class="card">
-      <img 
-        src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
-        class="card-img-top img-fluid"
-        onerror="this.onerror=null; this.src='not-found.jpg';"
-      />
-      <div class="card-body">
-        <h5 class="card-title">${nameMovie}</h5>
-        <h6 class="card-year mb-2 text-muted">${dateMovie}</h6>
-        <button href="#" 
-           class="btn btn-primary modal-detail-button btn-card"
-           data-bs-toggle="modal"
-           data-bs-target="#movieDetailModal"
-           data-tmdbid="${movie.id}"
-           data-typeid="${movie.media_type}">
-           Show Details
-        </button>
-      </div>
-    </div>
-  `;
+  return `<div class="movie-card"
+         data-bs-toggle="modal"
+         data-bs-target="#movieDetailModal"
+        >
+        <div class="movie-poster">
+          <div  data-tmdbid="${movie.id}"
+                       data-typeid="${movie.media_type}"
+                       class="modal-detail-button">
+            <img
+              src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="movie-info">
+          <div class="movie-top">
+            <div  class="movie-title"  
+                        data-tmdbid="${movie.id}"
+                        data-typeid="${movie.media_type}"
+                        class="modal-detail-button">
+              <h2>
+                ${nameMovie}
+                <span class="title">(${originalName})</span>
+              </h2>
+            </div>
+            <span class="movie-date">${dateMovie}</span>
+          </div>
+          <div class="movie-bottom">
+            <p>
+              ${movie.overview}
+            </p>
+          </div>
+        </div>
+      </div>`;
 }
 export function showModal(detail) {
   let dateMovie = detail.release_date || detail.first_air_date;
