@@ -132,13 +132,22 @@ function updateUIDetail(modalValue) {
 }
 
 //Event binding
-document.addEventListener("click", async function (e) {
-  console.log(e.target);
-  e.stopImmediatePropagation();
-  if (e.target.classList.contains("modal-detail-button")) {
+document.addEventListener(
+  "click",
+  async function (e) {
+    const trigger = e.target.closest(
+      ".movie-poster, .movie-title, .modal-detail-button",
+    );
+
+    if (!trigger) return;
+
+    const card = e.target.closest(".movie-card, .modal-detail-button");
+
+    if (!card) return;
+
     try {
-      const tmdbid = e.target.dataset.tmdbid;
-      const typeId = e.target.dataset.typeid;
+      const tmdbid = card.dataset.tmdbid;
+      const typeId = card.dataset.typeid;
       console.log("TypeId = " + typeId);
       const modalValue = await getModal(tmdbid, typeId);
 
@@ -146,15 +155,15 @@ document.addEventListener("click", async function (e) {
     } catch (err) {
       console.log(err);
     }
-  }
+  },
 
-  if (e.key === "Escape") {
+  /*   if (e.key === "Escape") {
     console.log("ESC");
     searchBoxMobile.classList.remove("active");
     searchMobile.classList.remove("inactive");
     overlayGlobal.classList.remove("active");
-  }
-});
+  } */
+);
 
 export function getGenreNames(genreIds) {
   return genreIds
@@ -176,6 +185,7 @@ export function updateSwiper(dataSwiper) {
 async function updateCardsDay() {
   const data = await getTrendingDays();
   const movies = data.results;
+  console.log(movies.length);
   renderMovies(movies, ".card-slider-day .swiper-wrapper");
   initSlider(".cardSwiper");
   console.log(data);
@@ -183,6 +193,7 @@ async function updateCardsDay() {
 async function updateCardsWeek() {
   const data = await getTrendingWeeks();
   const movies = data.results;
+  console.log(movies.length);
   renderMovies(movies, ".card-slider-week .swiper-wrapper");
   initSlider(".cardSwiper");
   console.log(data);
@@ -190,6 +201,7 @@ async function updateCardsWeek() {
 async function updateCardsPopular() {
   const data = await getTrendingPopular();
   const movies = data;
+  console.log(movies.length);
   renderMovies(movies, ".card-slider-popular .swiper-wrapper", "tv");
   initSlider(".cardSwiper");
   console.log(data);
@@ -197,6 +209,7 @@ async function updateCardsPopular() {
 async function updateCardsTopRated() {
   const data = await getTrendingTopRated();
   const movies = data;
+  console.log(movies.length);
   renderMovies(movies, ".card-slider-topRated .swiper-wrapper", "movie");
   initSlider(".cardSwiper");
   console.log(data);

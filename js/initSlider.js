@@ -4,7 +4,7 @@ export function initSlider(selector, options = {}) {
     slidesPerGroup: 1,
     spaceBetween: 15,
     resistanceRatio: 0,
-
+    slidesOffsetBefore: 20,
     slidesOffsetAfter: 0,
 
     navigation: {

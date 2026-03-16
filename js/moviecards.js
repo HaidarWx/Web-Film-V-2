@@ -20,23 +20,20 @@ export function showCards(movie) {
   return `<div class="movie-card"
          data-bs-toggle="modal"
          data-bs-target="#movieDetailModal"
+         data-tmdbid="${movie.id}"
+         data-typeid="${movie.media_type}"
         >
         <div class="movie-poster">
-          <div  data-tmdbid="${movie.id}"
-                       data-typeid="${movie.media_type}"
-                       class="modal-detail-button">
+        
             <img
               src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
               alt=""
             />
-          </div>
+         
         </div>
         <div class="movie-info">
           <div class="movie-top">
-            <div  class="movie-title"  
-                        data-tmdbid="${movie.id}"
-                        data-typeid="${movie.media_type}"
-                        class="modal-detail-button">
+            <div  class="movie-title">
               <h2>
                 ${nameMovie}
                 <span class="title">(${originalName})</span>
@@ -139,8 +136,8 @@ export function renderMovies(movies, selector, type) {
               class="card-img modal-detail-button"
               data-tmdbid=${movie.id} data-typeid=${movie.media_type ?? type}
             />
-          </div>`;
+           </div>`;
   });
 
-  container.innerHTML = htmlCards;
+  container.innerHTML = htmlCards.join("");
 }
