@@ -116,10 +116,16 @@ function updateUI(movies) {
   }
 
   containerFilm.classList.add("active");
-  let cards = ``;
 
-  movies.forEach((movie) => (cards += showCards(movie)));
-  console.log(cards);
+  const allowedTypes = ["movie", "tv"];
+  let cards = ``;
+  let filterMovie = movies.filter((mov) =>
+    allowedTypes.includes(mov.media_type),
+  );
+
+  console.log(filterMovie);
+  filterMovie.forEach((movie) => (cards += showCards(movie)));
+  /* console.log(cards); */
   containerFilm.innerHTML = cards;
 }
 

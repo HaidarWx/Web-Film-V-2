@@ -9,6 +9,7 @@ export function showCards(movie) {
   let dateMovie = movie.release_date || movie.first_air_date;
   let nameMovie = movie.title || movie.name;
   let originalName = movie.original_name || movie.original_title;
+
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }

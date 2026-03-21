@@ -250,15 +250,17 @@ body.no-scroll {
     width: 100%;
   }
   .movie-bottom p {
-    display: none;
+    font-size: 13px;
+    color: #8b8484;
   }
 
   .movie-top {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: 0.1rem;
   }
+
   .movie-title h2,
   .movie-title h2 .title {
     font-size: 1rem;
