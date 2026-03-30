@@ -15,11 +15,11 @@ import { heroSlider } from "./initSlider.js";
 window.addEventListener("DOMContentLoaded", async () => {
   genreList = await loadAllGenres();
   console.log(genreList);
-  await getPopularMovies();
-  await updateCardsDay();
-  await updateCardsWeek();
-  await updateCardsPopular();
-  await updateCardsTopRated();
+  await getPopularMovies(); //Hero Slider
+  await updateCards(getTrendingDays, "day");
+  await updateCards(getTrendingWeeks, "week");
+  await updateCards(getTrendingPopular, "popular");
+  await updateCards(getTrendingTopRated, "topRated");
 });
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
@@ -188,35 +188,11 @@ export function updateSwiper(dataSwiper) {
   heroSlider();
 }
 
-async function updateCardsDay() {
-  const data = await getTrendingDays();
+async function updateCards(getData, target) {
+  const data = await getData();
   const movies = data.results;
   console.log(movies.length);
-  renderMovies(movies, ".card-slider-day .swiper-wrapper");
-  initSlider(".cardSwiper");
-  console.log(data);
-}
-async function updateCardsWeek() {
-  const data = await getTrendingWeeks();
-  const movies = data.results;
-  console.log(movies.length);
-  renderMovies(movies, ".card-slider-week .swiper-wrapper");
-  initSlider(".cardSwiper");
-  console.log(data);
-}
-async function updateCardsPopular() {
-  const data = await getTrendingPopular();
-  const movies = data;
-  console.log(movies.length);
-  renderMovies(movies, ".card-slider-popular .swiper-wrapper", "tv");
-  initSlider(".cardSwiper");
-  console.log(data);
-}
-async function updateCardsTopRated() {
-  const data = await getTrendingTopRated();
-  const movies = data;
-  console.log(movies.length);
-  renderMovies(movies, ".card-slider-topRated .swiper-wrapper", "movie");
+  renderMovies(movies, `.card-slider-${target} .swiper-wrapper`);
   initSlider(".cardSwiper");
   console.log(data);
 }

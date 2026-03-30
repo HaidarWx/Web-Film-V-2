@@ -49,7 +49,7 @@ export async function getTrendingPopular() {
       media_type: "tv",
     }));
     console.log(movies); */
-    return data.results;
+    return data;
   } catch (err) {
     throw err;
   }
@@ -65,7 +65,7 @@ export async function getTrendingTopRated() {
     }
     const data = await response.json();
 
-    return data.results;
+    return data;
   } catch (err) {
     throw err;
   }
