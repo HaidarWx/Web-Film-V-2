@@ -14,22 +14,33 @@ import { initSlider } from "./initSlider.js";
 import { heroSlider } from "./initSlider.js";
 window.addEventListener("DOMContentLoaded", async () => {
   genreList = await loadAllGenres();
+
   console.log(genreList);
-  await getPopularMovies(); //Hero Slider
-  await updateCards(getTrendingDays, "day");
-  await updateCards(getTrendingWeeks, "week");
-  await updateCards(getTrendingPopular, "popular");
-  await updateCards(getTrendingTopRated, "topRated");
+
+  await Promise.all([
+    await updateCards(getTrendingDays, "day"),
+    await updateCards(getTrendingWeeks, "week"),
+    await updateCards(getTrendingPopular, "popular"),
+    await updateCards(getTrendingTopRated, "topRated"),
+  ]);
+
+  updateSwiper(await getPopularMovies()); //Hero Slider
+});
+
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("scrollY", window.scrollY);
 });
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
 const modalBody = document.querySelector(".modal-body");
 
-modalClose.addEventListener("click", function () {
-  modalOverlay.classList.remove("active");
-  modalBody.innerHTML = "";
-  document.body.classList.remove("no-scroll");
-});
+if (modalClose) {
+  modalClose.addEventListener("click", function () {
+    modalOverlay.classList.remove("active");
+    modalBody.innerHTML = "";
+    document.body.classList.remove("no-scroll");
+  });
+}
 
 let genreList = [];
 
@@ -56,6 +67,8 @@ soundButton.addEventListener("click", function (e) {
 searchMobile.addEventListener("click", function () {
   searchBoxMobile.classList.toggle("active");
   searchMobile.classList.toggle("inactive");
+
+  localStorage.setItem("lastSearch", inputKeyword.value);
 
   overlayGlobal.classList.toggle("active");
 
@@ -87,7 +100,7 @@ const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
-
+    localStorage.setItem("lastSearch", inputKeyword.value);
     const movies = await getMovies(inputKeyword.value);
 
     updateUI(movies);
@@ -138,38 +151,28 @@ function updateUIDetail(modalValue) {
 }
 
 //Event binding
-document.addEventListener(
-  "click",
-  async function (e) {
-    const trigger = e.target.closest(
-      ".movie-poster, .movie-title, .modal-detail-button",
-    );
+document.addEventListener("click", async function (e) {
+  const trigger = e.target.closest(
+    ".movie-poster, .movie-title, .modal-detail-button",
+  );
 
-    if (!trigger) return;
+  if (!trigger) return;
 
-    const card = e.target.closest(".movie-card, .modal-detail-button");
+  const card = e.target.closest(".movie-card, .modal-detail-button");
 
-    if (!card) return;
+  if (!card) return;
 
-    try {
-      const tmdbid = card.dataset.tmdbid;
-      const typeId = card.dataset.typeid;
-      console.log("TypeId = " + typeId);
-      const modalValue = await getModal(tmdbid, typeId);
+  try {
+    const tmdbid = card.dataset.tmdbid;
+    const typeId = card.dataset.typeid;
+    console.log("TypeId = " + typeId);
+    const modalValue = await getModal(tmdbid, typeId);
 
-      updateUIDetail(modalValue);
-    } catch (err) {
-      console.log(err);
-    }
-  },
-
-  /*   if (e.key === "Escape") {
-    console.log("ESC");
-    searchBoxMobile.classList.remove("active");
-    searchMobile.classList.remove("inactive");
-    overlayGlobal.classList.remove("active");
-  } */
-);
+    updateUIDetail(modalValue);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 export function getGenreNames(genreIds) {
   return genreIds
@@ -181,6 +184,7 @@ export function getGenreNames(genreIds) {
 }
 
 export function updateSwiper(dataSwiper) {
+  //Hero Slider
   const maxMovies = 20;
   const limitData = dataSwiper.slice(1, maxMovies);
   const swiperHTML = limitData.map(showSwiper).join("");

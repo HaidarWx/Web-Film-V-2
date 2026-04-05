@@ -1,7 +1,7 @@
 export const API_KEY = "1c353dc1b6d94ce88642f8d6b57fa0b7";
 export const BASE_URL = "https://api.themoviedb.org/3";
 import { heroSlider, initSlider } from "../js/initSlider.js";
-import { updateSwiper } from "../js/latihan2.js";
+/* import { updateSwiper } from "../js/latihan2.js"; */
 
 /* Card di home */
 export async function getTrendingDays() {
@@ -113,8 +113,7 @@ export async function getPopularMovies() {
       throw new Error("Gagal mengambil data movie popular!");
     }
     const data = await response.json();
-    console.log(data);
-    updateSwiper(data.results);
+    return data.results;
   } catch (err) {
     throw err;
   }
