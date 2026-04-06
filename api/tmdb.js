@@ -14,7 +14,7 @@ export async function getTrendingDays() {
       throw new Error("Gagal mengambil data movie popular!");
     }
     const data = await response.json();
-    return data;
+    return data.results;
   } catch (err) {
     throw err;
   }
@@ -31,7 +31,7 @@ export async function getTrendingWeeks() {
     }
     const data = await response.json();
 
-    return data;
+    return data.results;
   } catch (err) {
     throw err;
   }
@@ -44,12 +44,12 @@ export async function getTrendingPopular() {
       throw new Error("Gagal mengambil data movie popular!");
     }
     const data = await response.json();
-    /*  const movies = data.results.map((movie) => ({
+    const movies = data.results.map((movie) => ({
       ...movie,
       media_type: "tv",
     }));
-    console.log(movies); */
-    return data;
+    console.log(movies);
+    return movies;
   } catch (err) {
     throw err;
   }
@@ -64,8 +64,9 @@ export async function getTrendingTopRated() {
       throw new Error("Gagal mengambil data movie popular!");
     }
     const data = await response.json();
-
-    return data;
+    const movies = addMediaType(data, "movie");
+    console.log(movies);
+    return movies;
   } catch (err) {
     throw err;
   }
@@ -135,4 +136,11 @@ export async function loadAllGenres() {
   } catch (error) {
     throw error;
   }
+}
+
+function addMediaType(data, type) {
+  return data.results.map((item) => ({
+    ...item,
+    media_type: type,
+  }));
 }

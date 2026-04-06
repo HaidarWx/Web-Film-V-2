@@ -209,7 +209,9 @@ body.no-scroll {
   padding: 1rem 0;
   width: 100%;
 }
-
+.home-content.active {
+  display: none;
+}
 /* Responsive Design ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐*/
 @media (max-width: 640px) {
   /* Modal ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐ */

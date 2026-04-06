@@ -13,42 +13,36 @@ export function showCards(movie) {
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }
-  /* const genreId = movie.genre_ids;
-  const genreMovie = genreId.map((id) => {
+  /* const genreId = movie.genre_ids; */
+  /*  const genreMovie = genreId.map((id) => {
     const genre = genreList.find((g) => id === g.id);
     return genre.name;
   }); */
-  return `<div class="movie-card"
-         data-bs-toggle="modal"
-         data-bs-target="#movieDetailModal"
-         data-tmdbid="${movie.id}"
-         data-typeid="${movie.media_type}"
-        >
-        <div class="movie-poster">
-        
-            <img
-              src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
-              alt=""
-            />
-         
+  return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}">
+  <div
+    class="movie-card"
+    data-bs-toggle="modal"
+    data-bs-target="#movieDetailModal"
+  >
+    <div class="movie-poster">
+      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="" />
+    </div>
+    <div class="movie-info">
+      <div class="movie-top">
+        <div class="movie-title">
+          <h2>
+            ${nameMovie}
+            <span class="title">(${originalName})</span>
+          </h2>
         </div>
-        <div class="movie-info">
-          <div class="movie-top">
-            <div  class="movie-title">
-              <h2>
-                ${nameMovie}
-                <span class="title">(${originalName})</span>
-              </h2>
-            </div>
-            <span class="movie-date">${dateMovie}</span>
-          </div>
-          <div class="movie-bottom">
-            <p>
-              ${movie.overview}
-            </p>
-          </div>
-        </div>
-      </div>`;
+        <span class="movie-date">${dateMovie}</span>
+      </div>
+      <div class="movie-bottom">
+        <p>${movie.overview}</p>
+      </div>
+    </div>
+  </div></a>
+`;
 }
 export function showModal(detail) {
   let dateMovie = detail.release_date || detail.first_air_date;
@@ -130,14 +124,14 @@ export function renderMovies(movies, selector, type) {
   const container = document.querySelector(`${selector}`);
 
   const htmlCards = movies.map((movie) => {
-    return `<div class="swiper-slide">
+    return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}" class="swiper-slide">
             <img
               src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
               alt=""
               class="card-img modal-detail-button"
               data-tmdbid=${movie.id} data-typeid=${movie.media_type ?? type}
             />
-           </div>`;
+          </a>`;
   });
 
   container.innerHTML = htmlCards.join("");

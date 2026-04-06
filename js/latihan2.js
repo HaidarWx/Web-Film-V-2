@@ -12,24 +12,39 @@ import { showSwiper } from "./moviecards.js";
 import { loadAllGenres } from "../api/tmdb.js";
 import { initSlider } from "./initSlider.js";
 import { heroSlider } from "./initSlider.js";
+
+let genreList = [];
 window.addEventListener("DOMContentLoaded", async () => {
+  const homeContent = document.querySelector(".home-content");
+  // 🔥 ambil keyword dari URL
+  const params = new URLSearchParams(window.location.search);
+  const keyword = params.get("search");
+  /* console.log(params); */
+  // load genre dulu
   genreList = await loadAllGenres();
 
-  console.log(genreList);
+  if (keyword) {
+    // ✅ MODE SEARCH
+    const input = document.querySelector(".input-keyword");
+    if (input) input.value = keyword;
 
-  await Promise.all([
-    await updateCards(getTrendingDays, "day"),
-    await updateCards(getTrendingWeeks, "week"),
-    await updateCards(getTrendingPopular, "popular"),
-    await updateCards(getTrendingTopRated, "topRated"),
-  ]);
+    const movies = await getMovies(keyword);
+    updateUI(movies);
+    homeContent.classList.add("active");
+  } else {
+    // ✅ MODE HOME (default)
+    homeContent.classList.remove("active");
+    await Promise.all([
+      updateCards(getTrendingDays, "day"),
+      updateCards(getTrendingWeeks, "week"),
+      updateCards(getTrendingPopular, "popular"),
+      updateCards(getTrendingTopRated, "topRated"),
+    ]);
 
-  updateSwiper(await getPopularMovies()); //Hero Slider
+    updateSwiper(await getPopularMovies());
+  }
 });
 
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("scrollY", window.scrollY);
-});
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalClose = document.querySelector(".modal-close");
 const modalBody = document.querySelector(".modal-body");
@@ -41,8 +56,6 @@ if (modalClose) {
     document.body.classList.remove("no-scroll");
   });
 }
-
-let genreList = [];
 
 const menuToggle = document.querySelector("#menuToggle");
 const mobileMenu = document.querySelector("#mobileMenu");
@@ -68,8 +81,6 @@ searchMobile.addEventListener("click", function () {
   searchBoxMobile.classList.toggle("active");
   searchMobile.classList.toggle("inactive");
 
-  localStorage.setItem("lastSearch", inputKeyword.value);
-
   overlayGlobal.classList.toggle("active");
 
   if (searchBoxMobile.classList.contains("active")) {
@@ -93,17 +104,17 @@ overlayGlobal.addEventListener("click", function () {
   overlayGlobal.classList.remove("active");
 });
 
-//Fetch (Async Await)
+//Fetch (Async Await) Search Button
 
 const searchButton = document.querySelector("#searchButton");
 const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
-    localStorage.setItem("lastSearch", inputKeyword.value);
-    const movies = await getMovies(inputKeyword.value);
+    window.location.href = `index.html?search=${inputKeyword.value}`; //Querry Parameter============
 
-    updateUI(movies);
+    /* const movies = await getMovies(inputKeyword.value);
+    updateUI(movies); */
   } catch (err) {
     alert(err);
   }
@@ -114,9 +125,10 @@ searchButtonMobile.addEventListener("click", async function () {
 
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
-    const movies = await getMovies(inputKeyword.value);
+    window.location.href = `index.html?search=${inputKeyword.value}`; //Querry Parameter============
 
-    updateUI(movies);
+    /* const movies = await getMovies(inputKeyword.value); 
+    updateUI(movies); */
   } catch (err) {
     alert(err);
   }
@@ -194,7 +206,7 @@ export function updateSwiper(dataSwiper) {
 
 async function updateCards(getData, target) {
   const data = await getData();
-  const movies = data.results;
+  const movies = data;
   console.log(movies.length);
   renderMovies(movies, `.card-slider-${target} .swiper-wrapper`);
   initSlider(".cardSwiper");

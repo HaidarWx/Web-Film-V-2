@@ -1,4 +1,7 @@
 /* Swiper */
+.home-content.active {
+  display: none;
+}
 :root {
   --swiper-navigation-color: #ffffff; /* Change the color to red */
   --swiper-navigation-size: 30px; /* Change the size */

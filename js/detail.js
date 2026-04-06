@@ -2,16 +2,16 @@ import { getModal } from "../api/tmdb.js";
 window.addEventListener("DOMContentLoaded", async () => {
   loadDetail();
 });
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search); //cek URL
 
-const id = params.get("id");
-const type = params.get("type");
+const id = params.get("id"); //Ambil id dari URL
+const type = params.get("type"); //Ambil id dari URL
 
 const container = document.querySelector("#movie-detail");
 
 async function loadDetail() {
   try {
-    const data = await getModal(id, type);
+    const data = await getModal(id, type); // Fetch data berdasarkan id dan type
 
     container.innerHTML = `<h1>${data.title || data.name}</h1>
       <img src="https://image.tmdb.org/t/p/w500${data.poster_path}" />
