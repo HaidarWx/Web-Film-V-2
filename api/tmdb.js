@@ -71,13 +71,16 @@ export async function getTrendingTopRated() {
     throw err;
   }
 }
-/* Card di home */
+
+/* Request data untuk hasil film dari search */
 export async function getMovies(inputKeyword) {
   try {
     const response = await fetch(
       `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${inputKeyword}`,
     );
-
+    const movieRes = await fetch(
+      `${BASE_URL}/movie/popular?api_key=${API_KEY}`,
+    );
     if (!response.ok) {
       throw new Error("Gagal mengambil data");
     }
@@ -89,7 +92,9 @@ export async function getMovies(inputKeyword) {
     throw error;
   }
 }
-export async function getModal(movie_id, movie_type) {
+
+/* Request data untuk detail film */
+export async function getDetail(movie_id, movie_type) {
   try {
     const response = await fetch(
       `${BASE_URL}/${movie_type}/${movie_id}?api_key=${API_KEY}`,
@@ -119,6 +124,13 @@ export async function getPopularMovies() {
     throw err;
   }
 }
+
+function addMediaType(data, type) {
+  return data.results.map((item) => ({
+    ...item,
+    media_type: type,
+  }));
+}
 export async function loadAllGenres() {
   // Library Genre
   try {
@@ -136,11 +148,4 @@ export async function loadAllGenres() {
   } catch (error) {
     throw error;
   }
-}
-
-function addMediaType(data, type) {
-  return data.results.map((item) => ({
-    ...item,
-    media_type: type,
-  }));
 }

@@ -1,5 +1,6 @@
 import { getGenreNames } from "./latihan2.js";
 
+/* Membuat card untuk ditampilkan di content setelah user mengklik searcButton */
 export function showCards(movie) {
   const poster =
     movie.poster_path && movie.poster_path !== "N/A"
@@ -18,7 +19,7 @@ export function showCards(movie) {
     const genre = genreList.find((g) => id === g.id);
     return genre.name;
   }); */
-  return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}">
+  return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}&${movie.name || movie.title}">
   <div
     class="movie-card"
     data-bs-toggle="modal"
@@ -44,6 +45,7 @@ export function showCards(movie) {
   </div></a>
 `;
 }
+
 export function showModal(detail) {
   let dateMovie = detail.release_date || detail.first_air_date;
   let nameMovie = detail.title || detail.name;
@@ -89,6 +91,8 @@ export function showModal(detail) {
               </div>
             `;
 }
+
+/* Untuk membuat content hero slider */
 export function showSwiper(data) {
   const genre = getGenreNames(data.genre_ids);
   /*  console.log(data); */
@@ -120,6 +124,7 @@ export function showSwiper(data) {
           </div>`;
 }
 
+/* Membuat card untuk ditampilkan di home slider(non hero) */
 export function renderMovies(movies, selector, type) {
   const container = document.querySelector(`${selector}`);
 

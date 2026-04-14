@@ -21,6 +21,10 @@ body.no-scroll {
 .search-results.active {
   padding: 2rem;
 }
+.search-results a {
+  text-decoration: none;
+  color: #000000;
+}
 .search-results:hover {
 }
 .movie-card {
@@ -50,6 +54,7 @@ body.no-scroll {
   flex-direction: column;
   justify-content: space-between;
 }
+
 .movie-card {
   transition: box-shadow 0.2s ease;
 }
@@ -251,20 +256,22 @@ body.no-scroll {
   .movie-poster img {
     width: 100%;
   }
-  .movie-bottom p {
-    font-size: 13px;
-    color: #8b8484;
+  .movie-info {
+    padding: 8px;
   }
-
+  .movie-title h2,
+  .movie-title h2 .title,
+  .movie-date {
+    font-size: 0.8rem;
+  }
   .movie-top {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     row-gap: 0.1rem;
   }
-
-  .movie-title h2,
-  .movie-title h2 .title {
-    font-size: 1rem;
+  .movie-bottom p {
+    font-size: 12px;
+    color: #8b8484;
   }
 }
