@@ -75,19 +75,25 @@ export async function getTrendingTopRated() {
 /* Request data untuk hasil film dari search */
 export async function getMovies(inputKeyword) {
   try {
-    const response = await fetch(
-      `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${inputKeyword}`,
-    );
-    const movieRes = await fetch(
-      `${BASE_URL}/movie/popular?api_key=${API_KEY}`,
-    );
-    if (!response.ok) {
+    const [movieRes, tvRes] = await Promise.all([
+      fetch(
+        `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${inputKeyword}`,
+      ),
+      fetch(`${BASE_URL}/search/tv?api_key=${API_KEY}&query=${inputKeyword}`),
+    ]);
+    if (!movieRes.ok || !tvRes.ok) {
       throw new Error("Gagal mengambil data");
     }
 
-    const data = await response.json();
-    console.log(data.results);
-    return data.results;
+    const movieData = await movieRes.json();
+    const tvData = await tvRes.json();
+
+    const results = [
+      ...movieData.results.map((item) => ({ ...item, media_type: "movie" })),
+      ...tvData.results.map((item) => ({ ...item, media_type: "tv" })),
+    ];
+    console.log(results);
+    return results;
   } catch (error) {
     throw error;
   }

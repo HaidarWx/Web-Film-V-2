@@ -19,7 +19,7 @@ async function loadDetail() {
       <p>${data.overview}</p>
       <p>Release: ${data.release_date || data.first_air_date}</p>`;
 
-    document.title = data.title || data.name + " | NokaFilm";
+    document.title = `${data.title || data.name} | NokaMovie`;
   } catch (err) {
     container.innerHTML = "Data Error";
   }

@@ -1,16 +1,20 @@
-import { getGenreNames } from "./latihan2.js";
+import { getGenreNames } from "./main.js";
 
 /* Membuat card untuk ditampilkan di content setelah user mengklik searcButton */
 export function showCards(movie) {
-  const poster =
-    movie.poster_path && movie.poster_path !== "N/A"
-      ? movie.poster_path
-      : "not-found.jpg";
+  const poster = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    : `https://demofree.sirv.com/nope-not-here.jpg`;
 
   let dateMovie = movie.release_date || movie.first_air_date;
   let nameMovie = movie.title || movie.name;
   let originalName = movie.original_name || movie.original_title;
 
+  let movieTitle = movie.name || movie.title;
+  let movieURL = decodeURIComponent(
+    movieTitle.trim().toLowerCase().replace(/\s+/g, "+"),
+  );
+  console.log(movieURL);
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }
@@ -19,14 +23,14 @@ export function showCards(movie) {
     const genre = genreList.find((g) => id === g.id);
     return genre.name;
   }); */
-  return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}&${movie.name || movie.title}">
+  return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}&name=${movieURL.replace(/%20/g, "+")}">
   <div
     class="movie-card"
     data-bs-toggle="modal"
     data-bs-target="#movieDetailModal"
   >
-    <div class="movie-poster">
-      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="" />
+    <div class="movie-poster"> 
+      <img src="${poster}" alt="" />
     </div>
     <div class="movie-info">
       <div class="movie-top">
@@ -47,13 +51,14 @@ export function showCards(movie) {
 }
 
 export function showModal(detail) {
+  //Digunakan Nanti
   let dateMovie = detail.release_date || detail.first_air_date;
   let nameMovie = detail.title || detail.name;
-  /*  let originalMovie = detail.original_title || detail.original_name; */
+  let originalMovie = detail.original_title || detail.original_name;
   let genres = "Unknown";
   console.log(dateMovie);
   console.log(nameMovie);
-  /*  console.log(originalMovie) */
+  console.log(originalMovie);
   console.log(genres);
   if (detail.genres && detail.genres.length > 0) {
     genres = detail.genres
@@ -95,13 +100,16 @@ export function showModal(detail) {
 /* Untuk membuat content hero slider */
 export function showSwiper(data) {
   const genre = getGenreNames(data.genre_ids);
+  const poster = data.poster_path
+    ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+    : `https://demofree.sirv.com/nope-not-here.jpg`;
   /*  console.log(data); */
   return `<div class="swiper-slide">
             <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
             <div class="slide-overlay">
               <div class="slide-content">
                 <img
-                  src="https://image.tmdb.org/t/p/w500${data.poster_path}"
+                  src=""
                   alt=""
                   class="slide-img"
                 />
@@ -129,9 +137,12 @@ export function renderMovies(movies, selector, type) {
   const container = document.querySelector(`${selector}`);
 
   const htmlCards = movies.map((movie) => {
+    const poster = movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : `https://demofree.sirv.com/nope-not-here.jpg`;
     return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}" class="swiper-slide">
             <img
-              src="https://image.tmdb.org/t/p/w500${movie.poster_path}"
+              src="${poster}"
               alt=""
               class="card-img modal-detail-button"
               data-tmdbid=${movie.id} data-typeid=${movie.media_type ?? type}

@@ -28,9 +28,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (keyword) {
     // ✅ MODE SEARCH = aktif ketika user selesai input nama film.
     const input = document.querySelector(".input-keyword");
-    if (input) input.value = keyword;
+    console.log(keyword);
+    if (input) input.value = keyword.replace(/-/, " ");
 
-    const movies = await getMovies(keyword);
+    const movies = await getMovies(input.value);
+    console.log(input.value);
     updateUI(movies);
     homeContent.classList.add("active"); // Menghilangkan Swiper
   } else {
@@ -78,7 +80,7 @@ const swiperFilm = document.querySelector(".swiper-content");
 soundButton.addEventListener("click", function (e) {
   e.preventDefault();
   console.log("play");
-  music.volume = 0.3;
+  music.volume = 1;
   music.play();
 });
 
@@ -124,7 +126,8 @@ searchButtonMobile.addEventListener("click", async function () {
 
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
-    window.location.href = `index.html?search=${inputKeyword.value}`; //Querry Parameter============
+    const inputUser = inputKeyword.value.trim().replace(/\s+/g, "-");
+    window.location.href = `index.html?search=${inputUser}`; //Querry Parameter============
 
     /* const movies = await getMovies(inputKeyword.value); 
     updateUI(movies); */
@@ -140,7 +143,12 @@ const searchButton = document.querySelector("#searchButton");
 searchButton.addEventListener("click", async function () {
   try {
     const inputKeyword = document.querySelector(".input-keyword");
-    window.location.href = `index.html?search=${inputKeyword.value}`; //Querry Parameter============
+    const inputUser = inputKeyword.value
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+    if (!inputUser) return;
+    window.location.href = `index.html?search=${encodeURIComponent(inputUser)}`; //Querry Parameter============
 
     /* const movies = await getMovies(inputKeyword.value);
     updateUI(movies); */
