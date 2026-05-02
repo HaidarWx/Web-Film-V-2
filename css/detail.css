@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+
+  /* outline: 1px solid rgba(255, 0, 0, 0.3); */
+}
+
+.mov-body {
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/uyGH4YtKi7iSyAxKWLFdQWc7oXT.jpg);
+}
+.container-detail {
+  background-color: rgba(242, 221, 221, 0.836);
+}
+#movie-detail {
+  display: flex;
+  padding: 2.75rem;
+  justify-content: space-between;
+  column-gap: 2.75rem;
+}
+
+.mov-poster img {
+  border-radius: 10px;
+}
+
+.mov-info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  justify-content: center;
+}
+.mov-title {
+  display: flex;
+  column-gap: 0.5rem;
+}
+.title {
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  color: #000000;
+  font-weight: 700;
+}
+.mov-title span {
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  color: #000000e8;
+  font-weight: 500;
+}
+
+.mov-fact {
+  display: flex;
+  column-gap: 0.5rem;
+  align-items: center;
+}
+.certification {
+  border: 1px solid rgb(112, 112, 112);
+  padding: 0.25rem;
+  font-size: 16px;
+  color: rgb(112, 112, 112);
+  font-family: "Poppins", sans-serif;
+}
+.mov-action {
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+}
+
+.mov-action .action {
+  display: inline-flex;
+  text-decoration: none;
+  background-color: #032541;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  justify-content: center;
+  align-items: center;
+}
+
+.mov-action .action .bi {
+  font-size: 16px;
+  color: #ffff;
+}
+.trailer {
+}
+.mov-play {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 700;
+}
+.mov-play .bi {
+  color: #000000;
+  font-size: 16px;
+}
+
+.header-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.overview p {
+  line-height: 1.6;
+}
