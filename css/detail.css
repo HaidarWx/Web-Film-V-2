@@ -7,7 +7,7 @@
   /* outline: 1px solid rgba(255, 0, 0, 0.3); */
 }
 
-.mov-body {
+.info-body {
   background-position: left bottom;
   background-repeat: no-repeat;
   background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/uyGH4YtKi7iSyAxKWLFdQWc7oXT.jpg);
@@ -31,6 +31,11 @@
   flex-direction: column;
   row-gap: 1.5rem;
   justify-content: center;
+}
+.mov-top {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5;
 }
 .mov-title {
   display: flex;
@@ -91,7 +96,13 @@
   color: #000000;
   font-weight: 700;
 }
-.mov-play .bi {
+
+.mov-play:hover .bi-play-fill,
+.mov-play:hover {
+  color: gray;
+}
+
+.bi-play-fill {
   color: #000000;
   font-size: 16px;
 }
@@ -103,4 +114,223 @@
 
 .overview p {
   line-height: 1.6;
+}
+
+/* List Film */
+
+.header-episode {
+  display: flex;
+  column-gap: 1.75rem;
+  padding: 1.75rem 2.75rem;
+  background-color: #f3dfdf;
+}
+.header-episode-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 0.5rem;
+}
+.header-episode-right a {
+  text-decoration: none;
+}
+.header-episode-right a:hover .header-episode-title {
+  text-decoration: underline;
+}
+.header-episode-right a:hover .header-episode-title span {
+  text-decoration: none;
+  display: inline-block;
+}
+.header-episode-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.header-episode-title span {
+  cursor: default;
+  font-weight: 500;
+}
+.header-episode-right a:nth-last-child(1) {
+  text-decoration: none;
+  color: black;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+}
+.header-episode-right a:nth-last-child(1):hover {
+  color: gray;
+  text-decoration: underline;
+}
+
+/* Episode */
+
+.filter {
+  margin: 1rem 2rem;
+  font-weight: 400;
+}
+.filter span {
+  color: grey;
+  font-weight: 400;
+}
+.episode-card {
+  display: flex;
+  column-gap: 1rem;
+  margin: 1rem 2rem;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+.episode-card-left {
+  display: flex;
+}
+.episode-card-left img {
+  border-radius: 10px 0px 0px 10px;
+}
+.episode-card-right {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  justify-content: center;
+}
+.title-wrapper {
+  display: flex;
+  column-gap: 0.75rem;
+}
+.more-info {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+.title-box {
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  row-gap: 0.25rem;
+}
+
+.episode-title {
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+}
+.episode-title:hover {
+  text-decoration: underline;
+}
+
+.rating {
+  padding: 2.5px 7.5px;
+  background-color: #032541;
+  border-radius: 5px;
+  color: #ffff;
+  font-size: 0.9em;
+}
+.date,
+.runtime {
+  color: rgb(102, 102, 102);
+  font-size: 0.9em;
+}
+
+.overview p {
+  font-size: 0.9em;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Responsive Design ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐*/
+@media (max-width: 640px) {
+  .overview,
+  .header-info {
+    display: none;
+  }
+
+  .filter {
+    margin: 1rem 1rem;
+    font-weight: 400;
+  }
+  .info-body {
+    background-position: center bottom;
+    width: 100%;
+  }
+  #movie-detail {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .mov-poster img {
+    width: 50%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+  }
+  .mov-info {
+    row-gap: 1rem;
+  }
+  .mov-top {
+    row-gap: 0.25rem;
+  }
+  .mov-title {
+    flex-direction: column;
+  }
+  .title {
+    font-size: 1em;
+  }
+  .mov-title span {
+    font-size: 1.1em;
+  }
+  .certification {
+    font-size: 1.1em;
+  }
+  .genres {
+    font-size: 1.1em;
+  }
+  .mov-action .action {
+    background-color: #032541;
+    width: 40px;
+    height: 40px;
+  }
+  .overview p {
+    font-size: 12px;
+  }
+
+  .episode-card {
+    display: flex;
+    column-gap: 0.1rem;
+    margin: 1rem;
+    border: 1px solid grey;
+    border-radius: 5px 0px 0px 5px;
+  }
+  .episode-card-left {
+  }
+  .episode-card-left img {
+    width: 100%;
+    object-fit: cover;
+
+    border-radius: 5px;
+  }
+
+  .episode-title {
+    font-size: 13px;
+  }
+
+  .rating {
+    background-color: #032541;
+    border-radius: 2.5px;
+    color: #ffff;
+    font-size: 8px;
+  }
+  .date,
+  .runtime {
+    color: rgb(102, 102, 102);
+    font-size: 0.7em;
+  }
+
+  .title-wrapper {
+    display: flex;
+    column-gap: 0.25rem;
+  }
+
+  .episode-number {
+    font-size: 13px;
+  }
+
+  .title-box {
+    row-gap: 0.5rem;
+  }
 }
