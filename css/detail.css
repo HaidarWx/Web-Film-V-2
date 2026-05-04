@@ -8,7 +8,7 @@
 }
 
 .info-body {
-  background-position: left bottom;
+  background-position: center;
   background-repeat: no-repeat;
   background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/uyGH4YtKi7iSyAxKWLFdQWc7oXT.jpg);
 }
@@ -39,6 +39,7 @@
 }
 .mov-title {
   display: flex;
+  flex-direction: column;
   column-gap: 0.5rem;
 }
 .title {

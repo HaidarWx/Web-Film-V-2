@@ -100,7 +100,7 @@ export async function getMovies(inputKeyword) {
 }
 
 /* Request data untuk detail film */
-export async function getDetail(movie_id, movie_type) {
+/* export async function getDetail(movie_id, movie_type) {
   try {
     const response = await fetch(
       `${BASE_URL}/${movie_type}/${movie_id}?api_key=${API_KEY}`,
@@ -114,7 +114,7 @@ export async function getDetail(movie_id, movie_type) {
   } catch (error) {
     throw error;
   }
-}
+} */
 export async function getPopularMovies() {
   try {
     const response = await fetch(
@@ -153,5 +153,17 @@ export async function loadAllGenres() {
     return [...movieData.genres, ...tvData.genres];
   } catch (error) {
     throw error;
+  }
+}
+
+export async function getDetail(id, type) {
+  try {
+    const detailRes = await fetch(
+      `${BASE_URL}/${type}/${id}?api_key=${API_KEY}&append_to_response=videos,content_ratings`,
+    );
+    const detail = await detailRes.json();
+    return detail;
+  } catch (err) {
+    throw err;
   }
 }
