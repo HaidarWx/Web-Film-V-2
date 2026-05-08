@@ -236,6 +236,26 @@
   font-family: "Poppins", sans-serif;
 }
 
+.overlay-trailer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.overlay-trailer iframe.active {
+  display: none;
+}
+
+.overlay-trailer.active {
+  display: flex;
+}
+
+.mov-play {
+  cursor: pointer;
+}
 /* Responsive Design ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐*/
 @media (max-width: 640px) {
   .overview,

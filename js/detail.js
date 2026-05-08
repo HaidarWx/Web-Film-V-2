@@ -1,7 +1,8 @@
 import { getDetail, BASE_URL, API_KEY } from "../api/tmdb.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
-  loadDetail();
+  await loadDetail();
+  loadOverlay();
 });
 const params = new URLSearchParams(window.location.search); //cek URL
 const bodyInfo = document.querySelector(".info-container");
@@ -10,11 +11,6 @@ const type = params.get("type"); //Ambil id dari URL
 
 async function loadDetail() {
   try {
-    /* const [tvDetailRes, seasonRes] = Promise.all([
-      fetch(`${BASE_URL}/tv/${tvId}?api_key=${API_KEY}`),
-      fetch(`${BASE_URL}/tv/${tvId}/season/1?api_key=${API_KEY}`),
-    ]); */
-
     const detail = await getDetail(id, type);
     showDetail(detail);
 
@@ -41,11 +37,11 @@ function showDetail(data) {
     data.videos.results.find(
       (item) => item.site === "YouTube" && item.type === "Teaser",
     );
-
-  const youtubeUrl = video
-    ? `https://www.youtube.com/watch?v=${video.key}`
+  console.log(!video?.key);
+  const trailerEmbedUrl = video
+    ? `https://www.youtube.com/embed/${video.key}`
     : null;
-  console.log(youtubeUrl);
+
   const bodyCard = `<div class="info-body" style=" background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdrop});">
   <div class="container-detail">
         <div id="movie-detail">
@@ -78,10 +74,10 @@ function showDetail(data) {
                   <i class="bi bi-heart-fill"></i>
                 </a>
                 <div class="trailer">
-                  <a href="" class="mov-play">
+                  <span class="mov-play">
                     <i class="bi bi-play-fill"></i>
                     Play Trailer
-                  </a>
+                  </span>
                 </div>
               </div>
             </div>
@@ -98,11 +94,60 @@ function showDetail(data) {
           </div>
         </div>
       </div>
-    </div>`;
+    </div>
+     <div class="overlay-trailer" data-src="${trailerEmbedUrl}">
+      </div>`;
 
   bodyInfo.innerHTML = bodyCard;
 }
 
+/* Code untuk show trailer menggunakan overlay */
+function loadOverlay() {
+  const overlayTrailer = document.querySelector(".overlay-trailer");
+  const trailerFrame = overlayTrailer.querySelector("iframe");
+  const trailerBtn = document.querySelector(".mov-play");
+  /* Link trailer diambil dari dataset di overlay */
+  const trailerSrc = overlayTrailer.dataset.src;
+
+  /* Jika tombol trailer ditekan = show trailer video from youtube */
+  trailerBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    /* mengambil inner dari loadTrailer */
+    overlayTrailer.innerHTML = loadTrailer(trailerSrc);
+    overlayTrailer.classList.add("active");
+  });
+  /* Jika overlay diklik = keluar dari trailer */
+  overlayTrailer.addEventListener("click", function (e) {
+    /* Jika user menyentuh bagian overlay(bukan trailer) akan menghilangkan overlay */
+    if (e.target.classList[0] === "overlay-trailer") {
+      overlayTrailer.classList.remove("active");
+      overlayTrailer.innerHTML = "";
+    }
+  });
+  /* Jika user klik tombol trailer akan memunculkan overlay trailer */
+}
+
+/* Fungsi untuk memuat isi tag iframe */
+function loadTrailer(trailerEmbedUrl) {
+  return `<iframe
+          width="560"
+          height="315"
+          src="${trailerEmbedUrl}"
+          title="YouTube video player"
+          frameborder="0"
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+            web-share;
+          "
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>`;
+}
 /*   try {
     function getEpisode() {
     const data = await getDetail(id, type); // Fetch data berdasarkan id dan type
