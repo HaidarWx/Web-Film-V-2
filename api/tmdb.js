@@ -167,3 +167,19 @@ export async function getDetail(id, type) {
     throw err;
   }
 }
+
+export async function getEpisodes(id, type) {
+  if (type !== "tv") {
+    return;
+  }
+
+  const seasonNumber = 1;
+
+  const res = await fetch(
+    `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
+  );
+
+  const data = await res.json();
+
+  return data;
+}

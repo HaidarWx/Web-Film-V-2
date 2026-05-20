@@ -232,6 +232,11 @@
 }
 
 .overview p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1em * 2);
   font-size: 0.9em;
   font-family: "Poppins", sans-serif;
 }
@@ -312,22 +317,32 @@
 
   .episode-card {
     display: flex;
+
     column-gap: 0.1rem;
     margin: 1rem;
     border: 1px solid grey;
     border-radius: 5px 0px 0px 5px;
   }
   .episode-card-left {
+    display: flex;
+    width: 50%;
   }
   .episode-card-left img {
     width: 100%;
+    aspect-ratio: 2/1;
     object-fit: cover;
-
     border-radius: 5px;
   }
 
+  .episode-card-right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    justify-content: center;
+  }
   .episode-title {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .rating {
@@ -353,5 +368,8 @@
 
   .title-box {
     row-gap: 0.5rem;
+  }
+  .title-episode {
+    padding-left: 5px;
   }
 }

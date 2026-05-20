@@ -1,14 +1,17 @@
-import { getDetail, BASE_URL, API_KEY } from "../api/tmdb.js";
+import { getDetail, getEpisodes, BASE_URL, API_KEY } from "../api/tmdb.js";
 
+const params = new URLSearchParams(window.location.search); //cek URL
+const bodyInfo = document.querySelector(".info-container");
+const bodyList = document.querySelector(".episode-list");
+const id = params.get("id"); //Ambil id dari URL
+const type = params.get("type"); //Ambil id dari URL
 window.addEventListener("DOMContentLoaded", async () => {
+  if (type === "tv") {
+    await loadEpisodes();
+  }
   await loadDetail();
   loadOverlay();
 });
-const params = new URLSearchParams(window.location.search); //cek URL
-const bodyInfo = document.querySelector(".info-container");
-const id = params.get("id"); //Ambil id dari URL
-const type = params.get("type"); //Ambil id dari URL
-
 async function loadDetail() {
   try {
     const detail = await getDetail(id, type);
@@ -19,7 +22,16 @@ async function loadDetail() {
     throw err;
   }
 }
+async function loadEpisodes() {
+  try {
+    const detail = await getEpisodes(id, type);
 
+    showEpisodes(detail, detail.episodes);
+    console.log(detail);
+  } catch (err) {
+    throw err;
+  }
+}
 function showDetail(data) {
   const title = data.title || data.name;
   const poster = data.poster_path;
@@ -100,7 +112,45 @@ function showDetail(data) {
 
   bodyInfo.innerHTML = bodyCard;
 }
+function showEpisodes(data, dataEpisode) {
+  const rate = Math.round(data.vote_average * 10);
+  const date = data.air_date;
 
+  bodyList.innerHTML = dataEpisode
+    .map((e) => {
+      return `<div class="episode-card">
+              <a href="#" class="episode-card-left">
+                <img
+                  src="https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}"
+                  alt=""
+                />
+              </a>
+              <div class="episode-card-right">
+                <div class="title-episode">
+                  <div class="title-wrapper">
+                    <span class="episode-number">${e.episode_number}</span>
+                    <div class="title-box">
+                      <a href="#" class="episode-title">
+                        ${e.name}
+                      </a>
+                      <div class="more-info">
+                        <div class="rating">★ ${Math.round(e.vote_average * 10)} %</div>
+                        <div class="date">${e.air_date}</div>
+                        <div class="runtime">• ${e.runtime}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="overview">
+                  <p>
+                    ${e.overview}
+                  </p>
+                </div>
+              </div>
+            </div>`;
+    })
+    .join(" ");
+}
 /* Code untuk show trailer menggunakan overlay */
 function loadOverlay() {
   const overlayTrailer = document.querySelector(".overlay-trailer");
