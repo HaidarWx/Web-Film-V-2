@@ -2,13 +2,10 @@ import { getDetail, getEpisodes, BASE_URL, API_KEY } from "../api/tmdb.js";
 
 const params = new URLSearchParams(window.location.search); //cek URL
 const bodyInfo = document.querySelector(".info-container");
-const bodyList = document.querySelector(".episode-list");
+const bodyList = document.querySelector(".episode-wrapper");
 const id = params.get("id"); //Ambil id dari URL
 const type = params.get("type"); //Ambil id dari URL
 window.addEventListener("DOMContentLoaded", async () => {
-  if (type === "tv") {
-    await loadEpisodes();
-  }
   await loadDetail();
   loadOverlay();
 });
@@ -17,17 +14,30 @@ async function loadDetail() {
     const detail = await getDetail(id, type);
     showDetail(detail);
 
-    console.log(detail);
+    if (type === "tv") {
+      /* const seasonNumber = detail.seasons.map((e) => e.season_number);
+      console.log(seasonNumber);
+      const episodeDetails = await Promise.all(
+        seasonNumber.map((n) => getEpisodes(id, type, n)),
+      );
+      console.log(episodeDetails); */
+
+      await loadEpisodes(detail);
+    }
   } catch (err) {
     throw err;
   }
 }
-async function loadEpisodes() {
+async function loadEpisodes(details) {
   try {
-    const detail = await getEpisodes(id, type);
+    const seasonNumber = details.seasons.map((e) => e.season_number);
+    console.log(seasonNumber);
+    const episodeDetails = await Promise.all(
+      seasonNumber.map((n) => getEpisodes(id, type, n)),
+    );
+    console.log(episodeDetails);
 
-    showEpisodes(detail, detail.episodes);
-    console.log(detail);
+    showEpisodes(details, episodeDetails);
   } catch (err) {
     throw err;
   }
@@ -112,13 +122,15 @@ function showDetail(data) {
 
   bodyInfo.innerHTML = bodyCard;
 }
-function showEpisodes(data, dataEpisode) {
+function showEpisodes(data, dataSeason) {
   const rate = Math.round(data.vote_average * 10);
   const date = data.air_date;
+  console.log(dataSeason);
 
-  bodyList.innerHTML = dataEpisode
-    .map((e) => {
-      return `<div class="episode-card">
+  bodyList.innerHTML = dataSeason.map((n) => {
+    return n.episodes
+      .map((e) => {
+        return `<div class="episode-card">
               <a href="#" class="episode-card-left">
                 <img
                   src="https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}"
@@ -134,7 +146,7 @@ function showEpisodes(data, dataEpisode) {
                         ${e.name}
                       </a>
                       <div class="more-info">
-                        <div class="rating">★ ${Math.round(e.vote_average * 10)} %</div>
+                        <div class="rating">★ ${Math.round(e.vote_average * 10)}%</div>
                         <div class="date">${e.air_date}</div>
                         <div class="runtime">• ${e.runtime}</div>
                       </div>
@@ -148,8 +160,9 @@ function showEpisodes(data, dataEpisode) {
                 </div>
               </div>
             </div>`;
-    })
-    .join(" ");
+      })
+      .join(" ");
+  });
 }
 /* Code untuk show trailer menggunakan overlay */
 function loadOverlay() {

@@ -168,12 +168,10 @@ export async function getDetail(id, type) {
   }
 }
 
-export async function getEpisodes(id, type) {
+export async function getEpisodes(id, type, seasonNumber) {
   if (type !== "tv") {
     return;
   }
-
-  const seasonNumber = 1;
 
   const res = await fetch(
     `${BASE_URL}/tv/${id}/season/${seasonNumber}?api_key=${API_KEY}`,
