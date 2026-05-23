@@ -123,14 +123,13 @@ function showDetail(data) {
   bodyInfo.innerHTML = bodyCard;
 }
 function showEpisodes(data, dataSeason) {
-  const rate = Math.round(data.vote_average * 10);
-  const date = data.air_date;
   console.log(dataSeason);
 
-  bodyList.innerHTML = dataSeason.map((n) => {
-    return n.episodes
-      .map((e) => {
-        return `<div class="episode-card">
+  bodyList.innerHTML = dataSeason
+    .map((n) => {
+      const episodeHTML = n.episodes
+        .map((e) => {
+          return `<div class="episode-card">
               <a href="#" class="episode-card-left">
                 <img
                   src="https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}"
@@ -160,9 +159,12 @@ function showEpisodes(data, dataSeason) {
                 </div>
               </div>
             </div>`;
-      })
-      .join(" ");
-  });
+        })
+        .join("");
+
+      return `<div class="">${n.name}</div>${episodeHTML}`;
+    })
+    .join("");
 }
 /* Code untuk show trailer menggunakan overlay */
 function loadOverlay() {
