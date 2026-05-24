@@ -184,6 +184,8 @@
   display: flex;
 }
 .episode-card-left img {
+  width: 227px;
+  height: 127px;
   border-radius: 10px 0px 0px 10px;
 }
 .episode-card-right {
@@ -329,6 +331,7 @@
   }
   .episode-card-left img {
     width: 100%;
+
     aspect-ratio: 2/1;
     object-fit: cover;
     border-radius: 5px;

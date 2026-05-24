@@ -46,7 +46,11 @@ function showDetail(data) {
   const title = data.title || data.name;
   const poster = data.poster_path;
   const date = data.last_air_date || data.release_date;
-  const original = data.original_name || data.original_title;
+  const original =
+    data.origin_country == "US"
+      ? "&nbsp"
+      : data.original_name || data.original_title;
+
   const genre = data.genres.map((i) => i).map((g) => g.name);
   const rating = Math.round(data.vote_average * 10);
   const backdrop = data.belongs_to_collection
@@ -59,7 +63,7 @@ function showDetail(data) {
     data.videos.results.find(
       (item) => item.site === "YouTube" && item.type === "Teaser",
     );
-  console.log(!video?.key);
+  console.log(data.origin_country);
   const trailerEmbedUrl = video
     ? `https://www.youtube.com/embed/${video.key}`
     : null;
@@ -123,16 +127,22 @@ function showDetail(data) {
   bodyInfo.innerHTML = bodyCard;
 }
 function showEpisodes(data, dataSeason) {
+  const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
   console.log(dataSeason);
 
   bodyList.innerHTML = dataSeason
     .map((n) => {
       const episodeHTML = n.episodes
         .map((e) => {
+          const imgEpisode = e.still_path
+            ? `https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}`
+            : nfound;
+          const rating = e.vote_average ? Math.round(e.vote_average * 10) : "-";
+          const runtime = e.runtime ? e.runtime : "-";
           return `<div class="episode-card">
               <a href="#" class="episode-card-left">
                 <img
-                  src="https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}"
+                  src="${imgEpisode}"
                   alt=""
                 />
               </a>
@@ -145,9 +155,9 @@ function showEpisodes(data, dataSeason) {
                         ${e.name}
                       </a>
                       <div class="more-info">
-                        <div class="rating">★ ${Math.round(e.vote_average * 10)}%</div>
+                        <div class="rating">★ ${rating}%</div>
                         <div class="date">${e.air_date}</div>
-                        <div class="runtime">• ${e.runtime}</div>
+                        <div class="runtime">• ${runtime}</div>
                       </div>
                     </div>
                   </div>
@@ -162,7 +172,9 @@ function showEpisodes(data, dataSeason) {
         })
         .join("");
 
-      return `<div class="">${n.name}</div>${episodeHTML}`;
+      return `<div class="filter">
+            <h3>${n.name}</h3>
+          </div>${episodeHTML}`;
     })
     .join("");
 }
