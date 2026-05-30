@@ -37,7 +37,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     homeContent.classList.add("active"); // Menghilangkan Swiper
   } else {
     // ✅ MODE HOME = aktif ketika user tidak di mode search
-    homeContent.classList.remove("active");
+    /*   homeContent.classList.remove("active"); */
 
     //me-request semua data swiper (kecuali hero) sekaligus
     await Promise.all([
@@ -113,11 +113,11 @@ overlayNavbar.addEventListener("click", function (e) {
   document.body.classList.remove("no-scroll");
 });
 /* Jika user memasuki input mode, maka seluruh content kecuali search input akan ditutupi overlay */
-overlayGlobal.addEventListener("click", function () {
+/* overlayGlobal.addEventListener("click", function () {
   searchBoxMobile.classList.remove("active");
   searchMobile.classList.remove("inactive");
   overlayGlobal.classList.remove("active");
-});
+}); */
 
 //Search Module for Mobile
 const searchButtonMobile = document.querySelector("#searchButtonMobile");

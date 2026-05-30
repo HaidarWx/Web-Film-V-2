@@ -128,10 +128,11 @@ function showDetail(data) {
 }
 function showEpisodes(data, dataSeason) {
   const nfound = `https://static.vecteezy.com/system/resources/thumbnails/004/639/366/small/error-404-not-found-text-design-vector.jpg`;
-  console.log(dataSeason);
 
   bodyList.innerHTML = dataSeason
-    .map((n) => {
+    .map((n, i) => {
+      const isOpen = n.season_number === 1 ? "open" : "";
+
       const episodeHTML = n.episodes
         .map((e) => {
           const imgEpisode = e.still_path
@@ -172,9 +173,9 @@ function showEpisodes(data, dataSeason) {
         })
         .join("");
 
-      return `<div class="filter">
-            <h3>${n.name}</h3>
-          </div>${episodeHTML}`;
+      return `<details class="season" ${isOpen} data-season="${n.season_number}">
+            <summary><i class="bi bi-caret-right-square arrow-season"></i>${n.name}</summary>
+          ${episodeHTML}</details>`;
     })
     .join("");
 }
