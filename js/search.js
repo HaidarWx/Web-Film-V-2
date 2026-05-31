@@ -114,8 +114,6 @@ overlayNavbar.addEventListener("click", function (e) {
 });
 const searchButtonMobile = document.querySelector("#searchButtonMobile");
 searchButtonMobile.addEventListener("click", async function () {
-  overlayGlobal.classList.remove("active");
-
   try {
     const inputKeyword = document.querySelector(".input-keyword-mobile");
     const inputUser = inputKeyword.value.trim().replace(/\s+/g, "-");

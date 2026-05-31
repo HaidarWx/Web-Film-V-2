@@ -133,21 +133,21 @@ function showEpisodes(data, dataSeason) {
             : nfound;
           const rating = e.vote_average ? Math.round(e.vote_average * 10) : "-";
           const runtime = e.runtime ? e.runtime : "-";
-          return `<div class="episode-card">
-              <a href="#" class="episode-card-left">
+          return `<a href="watch.html?id=${e.show_id}&season=${e.season_number}&episode=${e.episode_number}" class="episode-card">
+              <div class="episode-card-left">
                 <img
                   src="${imgEpisode}"
                   alt=""
                 />
-              </a>
+              </div>
               <div class="episode-card-right">
                 <div class="title-episode">
                   <div class="title-wrapper">
                     <span class="episode-number">${e.episode_number}</span>
                     <div class="title-box">
-                      <a href="#" class="episode-title">
+                      <div class="episode-title">
                         ${e.name}
-                      </a>
+                      </div>
                       <div class="more-info">
                         <div class="rating">★ ${rating}%</div>
                         <div class="date">${e.air_date}</div>
@@ -162,7 +162,7 @@ function showEpisodes(data, dataSeason) {
                   </p>
                 </div>
               </div>
-            </div>`;
+            </a>`;
         })
         .join("");
 
