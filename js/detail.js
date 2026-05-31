@@ -15,13 +15,6 @@ async function loadDetail() {
     showDetail(detail);
 
     if (type === "tv") {
-      /* const seasonNumber = detail.seasons.map((e) => e.season_number);
-      console.log(seasonNumber);
-      const episodeDetails = await Promise.all(
-        seasonNumber.map((n) => getEpisodes(id, type, n)),
-      );
-      console.log(episodeDetails); */
-
       await loadEpisodes(detail);
     }
   } catch (err) {
@@ -68,7 +61,7 @@ function showDetail(data) {
     ? `https://www.youtube.com/embed/${video.key}`
     : null;
 
-  const bodyCard = `<div class="info-body" style=" background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdrop});">
+  const bodyCard = `<div class="info-body" style="background-image: url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces/${backdrop});">
   <div class="container-detail">
         <div id="movie-detail">
           <div class="mov-poster">

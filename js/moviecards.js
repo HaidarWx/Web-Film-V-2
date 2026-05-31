@@ -1,5 +1,3 @@
-import { getGenreNames } from "./main.js";
-
 /* Membuat card untuk ditampilkan di content setelah user mengklik searcButton */
 export function showCards(movie) {
   const poster = movie.poster_path
@@ -95,60 +93,4 @@ export function showModal(detail) {
                 </div>
               </div>
             `;
-}
-
-/* Untuk membuat content hero slider */
-export function showSwiper(data) {
-  const genre = getGenreNames(data.genre_ids);
-  const poster = data.poster_path
-    ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-    : `https://demofree.sirv.com/nope-not-here.jpg`;
-  /*  console.log(data); */
-  return `<div class="swiper-slide">
-            <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
-            <div class="slide-overlay">
-              <div class="slide-content">
-                <img
-                  src=""
-                  alt=""
-                  class="slide-img"
-                />
-
-                <h1 class="slide-title">
-                  ${data.title || data.name}
-                </h1>
-                <div class="slide-genre">${genre}</div>
-                <p class="slide-info">
-                  ${data.overview}
-                </p>
-                <div class="slide-buttons">
-                  <a href="#" class="slide-button-1" 
-                    ><i class="bi bi-play-fill"></i> Watch Now</a
-                  >
-                  <a href="#" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} data-typeid="${data.media_type}"> More Info</a>
-                </div>
-              </div>
-            </div>
-          </div>`;
-}
-
-/* Membuat card untuk ditampilkan di home slider(non hero) */
-export function renderMovies(movies, selector, type) {
-  const container = document.querySelector(`${selector}`);
-
-  const htmlCards = movies.map((movie) => {
-    const poster = movie.poster_path
-      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-      : `https://demofree.sirv.com/nope-not-here.jpg`;
-    return `<a href="detail.html?id=${movie.id}&type=${movie.media_type}" class="swiper-slide">
-            <img
-              src="${poster}"
-              alt=""
-              class="card-img modal-detail-button"
-              data-tmdbid=${movie.id} data-typeid=${movie.media_type ?? type}
-            />
-          </a>`;
-  });
-
-  container.innerHTML = htmlCards.join("");
 }
