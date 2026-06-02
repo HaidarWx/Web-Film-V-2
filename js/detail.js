@@ -1,4 +1,4 @@
-import { getDetail, getEpisodes, BASE_URL, API_KEY } from "../api/tmdb.js";
+import { getDetail, getSeasons, BASE_URL, API_KEY } from "../api/tmdb.js";
 
 const params = new URLSearchParams(window.location.search); //cek URL
 const bodyInfo = document.querySelector(".info-container");
@@ -15,18 +15,18 @@ async function loadDetail() {
     showDetail(detail);
 
     if (type === "tv") {
-      await loadEpisodes(detail);
+      await loadSeasons(detail);
     }
   } catch (err) {
     throw err;
   }
 }
-async function loadEpisodes(details) {
+async function loadSeasons(details) {
   try {
     const seasonNumber = details.seasons.map((e) => e.season_number);
     console.log(seasonNumber);
     const episodeDetails = await Promise.all(
-      seasonNumber.map((n) => getEpisodes(id, type, n)),
+      seasonNumber.map((n) => getSeasons(id, type, n)),
     );
     console.log(episodeDetails);
 
@@ -133,42 +133,27 @@ function showEpisodes(data, dataSeason) {
             : nfound;
           const rating = e.vote_average ? Math.round(e.vote_average * 10) : "-";
           const runtime = e.runtime ? e.runtime : "-";
-          return `<a href="watch.html?id=${e.show_id}&season=${e.season_number}&episode=${e.episode_number}" class="episode-card">
-              <div class="episode-card-left">
-                <img
-                  src="${imgEpisode}"
-                  alt=""
-                />
-              </div>
-              <div class="episode-card-right">
-                <div class="title-episode">
-                  <div class="title-wrapper">
-                    <span class="episode-number">${e.episode_number}</span>
-                    <div class="title-box">
-                      <div class="episode-title">
-                        ${e.name}
-                      </div>
-                      <div class="more-info">
-                        <div class="rating">★ ${rating}%</div>
-                        <div class="date">${e.air_date}</div>
-                        <div class="runtime">• ${runtime}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="overview">
-                  <p>
-                    ${e.overview}
-                  </p>
-                </div>
-              </div>
-            </a>`;
+          return ``;
         })
         .join("");
 
-      return `<details class="season" ${isOpen} data-season="${n.season_number}">
-            <summary><i class="bi bi-caret-right-square arrow-season"></i>${n.name}</summary>
-          ${episodeHTML}</details>`;
+      return `<a href="watch.html?id=${id}&season=${n.season_number}" class="season" data-season="${n.season_number}">
+      <div class="season-card">
+      <div class="season-img"><img src="https://media.themoviedb.org/t/p/w300_and_h450_face/${n.poster_path}"></div>
+      <div class="season-detail">
+   
+       <div class="detail-top">
+        <div class="season-title">${n.name}</div>
+        <div class="season-hot">
+         <div class="season-date">${n.air_date ? n.air_date : "No Date "}</div>
+         <div class="season-date">${n.episodes.length} Episode's</div>
+        </div>
+        
+      </div>
+      <div class="season-overview">${n.overview}</div>
+      </div>
+      </div>
+      </a>`;
     })
     .join("");
 }

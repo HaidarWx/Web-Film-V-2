@@ -168,7 +168,7 @@ export async function getDetail(id, type) {
   }
 }
 
-export async function getEpisodes(id, type, seasonNumber) {
+export async function getSeasons(id, type, seasonNumber) {
   if (type !== "tv") {
     return;
   }
@@ -180,4 +180,19 @@ export async function getEpisodes(id, type, seasonNumber) {
   const data = await res.json();
 
   return data;
+}
+
+export async function getSeason(id, season_number) {
+  try {
+    const epiRes = await fetch(
+      `${BASE_URL}/tv/${id}/season/${season_number}?api_key=${API_KEY}`,
+    );
+    if (!epiRes.ok) {
+      throw new Error("Gagal mengambil data season!");
+    }
+    const data = await epiRes.json();
+    return data;
+  } catch (err) {
+    throw err;
+  }
 }
