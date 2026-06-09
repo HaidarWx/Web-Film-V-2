@@ -63,7 +63,7 @@ function showSwiper(data) {
   const poster = data.poster_path
     ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
     : `https://demofree.sirv.com/nope-not-here.jpg`;
-
+  console.log(data);
   return `<div class="swiper-slide">
             <div class="slide-bg" style="background-image: url('https://image.tmdb.org/t/p/w500${data.backdrop_path}')" ></div>
             <div class="slide-overlay">
@@ -73,7 +73,6 @@ function showSwiper(data) {
                   alt=""
                   class="slide-img"
                 />
-
                 <h1 class="slide-title">
                   ${data.title || data.name}
                 </h1>
@@ -85,7 +84,7 @@ function showSwiper(data) {
                   <a href="#" class="slide-button-1" 
                     ><i class="bi bi-play-fill"></i> Watch Now</a
                   >
-                  <a href="#" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} data-typeid="${data.media_type}"> More Info</a>
+                  <a href="detail.html?id=${data.id}&type=${data.media_type}&name=${data.title}" class="slide-button-2 modal-detail-button" data-tmdbid=${data.id} data-typeid="${data.media_type}"> More Info</a>
                 </div>
               </div>
             </div>

@@ -94,7 +94,7 @@ function showEpisodes(data) {
       const imgEpisode = e.still_path
         ? `https://media.themoviedb.org/t/p/w227_and_h127_face/${e.still_path}`
         : nfound;
-      return `<a href="watch.html?id=${e.show_id}&season=${e.season_number}&episode=${e.episode_number}" class="episode-card">
+      return `<a href="stream.html?id=${e.show_id}&season=${e.season_number}&episode=${e.episode_number}" class="episode-card">
               <div class="episode-card-left">
                 <img
                   src="${imgEpisode}"
