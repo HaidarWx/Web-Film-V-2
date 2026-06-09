@@ -196,3 +196,12 @@ export async function getSeason(id, season_number) {
     throw err;
   }
 }
+
+/* export async function getEpisode(params) {
+  try{
+    const 
+  }catch(err) {
+
+  }
+  
+} */
