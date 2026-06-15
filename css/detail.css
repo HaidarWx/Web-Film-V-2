@@ -212,7 +212,10 @@ a {
   flex-direction: column;
   row-gap: 0.25rem;
 }
-
+.episode-number {
+  color: black;
+  font-weight: 600;
+}
 .episode-title {
   text-decoration: none;
   color: black;
