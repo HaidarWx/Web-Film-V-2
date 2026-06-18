@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const inputBox = document.querySelector(".input-box");
 
     if (inputBox.value) {
-      const userComment = inputBox.value;
+      const userComment = showComments(inputBox.value);
 
       commentContainer.insertAdjacentHTML("beforeend", userComment);
       inputBox.value = "";
@@ -32,10 +32,10 @@ function showComments(inputComment) {
               </div>
               <div class="comment-info">
                 <div class="comment-name">Homudoka + 0 days</div>
-                <div class="user-input">${inputComment.value}</div>
+                <div class="user-input">${inputComment}</div>
                 <div class="comment-reply">
                   <div class="icon-love">
-                    <i class="bi bi-heart"></i> ${many_comments} like
+                    <i class="bi bi-heart"></i> 0 like
                   </div>
 
                   <div class="path"><i class="bi bi-flag"></i></div>
