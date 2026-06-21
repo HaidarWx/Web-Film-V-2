@@ -19,8 +19,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     if (inputBox.value) {
       const userComment = showComments(inputBox.value);
-
       commentContainer.insertAdjacentHTML("beforeend", userComment);
+      checkComment(commentContainer);
       inputBox.value = "";
     }
   });
@@ -44,6 +44,12 @@ function showComments(inputComment) {
             </div>
             <hr />`;
 }
+function checkComment(commentList) {
+  const comment_cards = commentList.querySelectorAll(":scope > .comment-card");
+  const comment_info = document.querySelector(".comment-top h1 span");
+  const comments = comment_cards.length;
+  comment_info.innerHTML = comments;
+}
 async function loadEpisode() {
   const data = await getSeason(id, season);
   const dataMovie = await getDetail(id, "tv");
@@ -51,6 +57,8 @@ async function loadEpisode() {
   const movieHTML = showStream(data.episodes[episode - 1], data, dataMovie);
   const movieContainer = document.querySelector(".watch-layout");
   movieContainer.innerHTML = movieHTML;
+  const comment_list = document.querySelector(".comment-list");
+  checkComment(comment_list);
 }
 
 function showStream(dataEpisode, dataSeason, dataMovie) {
@@ -59,6 +67,7 @@ function showStream(dataEpisode, dataSeason, dataMovie) {
   const date = dataEpisode.air_date;
   const age = dataMovie.content_ratings.results[2].rating;
   const poster_season = dataSeason.poster_path;
+
   const genres = dataMovie.genres
     .map((g) => {
       return `<div class="serial-genre">${g.name}</div>`;
@@ -130,7 +139,7 @@ function showStream(dataEpisode, dataSeason, dataMovie) {
         </div>
         <div class="video-comment">
           <div class="comment-top">
-            <h1>Comment's (0)</h1>
+            <h1>Comment's (<span>0</span>)</h1>
           </div>
           <div class="comment-user">
             <div class="user-icon"><i class="bi bi-person-circle"></i></div>
@@ -143,7 +152,6 @@ function showStream(dataEpisode, dataSeason, dataMovie) {
             </div>
           </div>
           <div class="comment-list">
-            
           </div>
         </div>
       </section>
