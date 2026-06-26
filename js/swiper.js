@@ -34,10 +34,8 @@ yang ingin dimasukan card swipernyas */
 async function updateCards(getData, target) {
   const data = await getData();
   const movies = data;
-  console.log(movies.length);
   renderMovies(movies, `.card-slider-${target} .swiper-wrapper`);
   initSlider(".cardSwiper");
-  console.log(data);
 }
 /* updateSwiper digunakan untuk menampilkan hero slider dari parameter dataSwipers */
 function updateSwiper(dataSwiper) {

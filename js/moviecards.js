@@ -54,10 +54,6 @@ export function showModal(detail) {
   let nameMovie = detail.title || detail.name;
   let originalMovie = detail.original_title || detail.original_name;
   let genres = "Unknown";
-  console.log(dateMovie);
-  console.log(nameMovie);
-  console.log(originalMovie);
-  console.log(genres);
   if (detail.genres && detail.genres.length > 0) {
     genres = detail.genres
       .map(function (g) {
@@ -65,7 +61,7 @@ export function showModal(detail) {
       })
       .join(", ");
   }
-  console.log(detail);
+
   if (dateMovie === "") {
     dateMovie = "Coming Soon...";
   }

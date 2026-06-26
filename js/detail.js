@@ -24,11 +24,10 @@ async function loadDetail() {
 async function loadSeasons(details) {
   try {
     const seasonNumber = details.seasons.map((e) => e.season_number);
-    console.log(seasonNumber);
+
     const episodeDetails = await Promise.all(
       seasonNumber.map((n) => getSeasons(id, type, n)),
     );
-    console.log(episodeDetails);
 
     showEpisodes(details, episodeDetails);
   } catch (err) {

@@ -4,8 +4,6 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 const season = params.get("season");
 window.addEventListener("DOMContentLoaded", async () => {
-  console.log(id);
-  console.log(season);
   await loadSeason();
 });
 
@@ -14,8 +12,6 @@ async function loadSeason() {
   const dataDetail = await getDetail(id, "tv");
   showSeason(dataSeason, dataDetail);
   showEpisodes(dataSeason.episodes);
-  console.log(dataSeason);
-  console.log(dataDetail);
 }
 
 function showSeason(dataSeason, dataDetail) {

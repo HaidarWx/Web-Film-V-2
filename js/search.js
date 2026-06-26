@@ -10,11 +10,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     // ✅ MODE SEARCH = aktif ketika user selesai input nama film.
     const homeContent = document.querySelector(".home-content");
     const input = document.querySelector(".input-keyword");
-    console.log(keyword);
+
     if (input) input.value = keyword.replace(/-/g, " ");
 
     const movies = await getMovies(input.value);
-    console.log(input.value);
+
     updateUI(movies);
 
     homeContent ? homeContent.classList.add("active") : "";
@@ -44,7 +44,7 @@ function updateUI(movies) {
 
   console.log(filterMovie);
   filterMovie.forEach((movie) => (cards += showCards(movie)));
-  /* console.log(cards); */
+
   containerFilm.innerHTML = cards;
 }
 
